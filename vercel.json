@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/signups",
+      "dest": "https://script.google.com/macros/s/AKfycbzaaZoHVJmQBQ7anWSYZ8CdcyaZsNQ9g4goRUF-xWV-NtCP3e8Rxf5DAZajMy9mZpSIyQ/exec",
+      "headers": {
+        "accept": "application/json"
+      }
+    }
+  ]
+}
