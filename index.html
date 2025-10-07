@@ -7,6 +7,7 @@
   <title>MITA 2 Ticket Sales</title>
   <link rel="icon" href="https://storage.googleapis.com/msgsndr/tfaMfEcKzbKeor4FyoMS/media/67d635061b97ac1cbd002603.png" type="image/png" />
   <style>
+    /* --- mêmes styles que ta version actuelle --- */
     :root{
       --brand: hsl(40, 50%, 60%);
       --brand-dark: hsl(40, 51%, 20%);
@@ -89,8 +90,8 @@
     .drp .drp-day.is-start::before,.drp .drp-day.is-end::before{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(var(--black-rgb),.15)}
     .drp .drp-day.is-preview{background:color-mix(in oklab,var(--drp-selected-bg) 28%,transparent)}
     .drp .drp-day.is-preview-edge{background:color-mix(in oklab,var(--drp-selected-bg) 92%,transparent);color:var(--drp-selected-fg);font-weight:800;box-shadow:inset 0 0 0 1px rgba(var(--black-rgb),.15)}
-    .section-title{display:inline-flex;align-items:center;gap:8px;color:var(--ink);background:transparent;padding:0;border-radius:0;font-size:1.25rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin:2rem 0 16px;box-shadow:none}
-    .section-title{margin-top:6px}
+    .section-title{display:inline-flex;align-items:center;gap:8px;color:var(--ink);background:transparent;padding:0;border-radius:0;font-size:1.25rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin:2rem 0 16px;box-shadow:none;}
+    .section-title{margin-top:6px;}
     .kpis{display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:12px;margin-top:8px}
     .kpi{background:linear-gradient(45deg,hsla(0,0%,12%,.5),hsla(0,0%,12%,.2),hsla(0,0%,0%,.5));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);color:var(--ink);border-radius:var(--radius);padding:1.25rem;box-shadow:var(--shadow-soft);border:1px solid var(--border-soft);display:flex;flex-direction:column;gap:.5rem;min-height:110px}
     .kpi .label{font-size:.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800}
@@ -177,10 +178,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzaaZoHVJmQBQ7anWSYZ8CdcyaZsNQ9g4goRUF-xWV-NtCP3e8Rxf5DAZajMy9mZpSIyQ/exec';
-  </script>
-
+  <!-- DateRangePicker (identique à ta version) -->
   <script>
     (function(){
       const clamp = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -190,253 +188,16 @@
       const isSameDay = (a,b)=>!!(a&&b) && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
 
       class DateRangePicker{
-        constructor(root,opts={}){
-          if(!root) throw new Error("DateRangePicker root required");
-          this.root=root;
-          this.opts=Object.assign({mode:"range",value:undefined,locale:"en-US",firstDayOfWeek:0,onChange:undefined,onOpenChange:undefined},opts);
-          this.formatter=new Intl.DateTimeFormat(this.opts.locale||"en-US",{month:"2-digit",day:"2-digit",year:"numeric"});
-          this.monthFormatter=new Intl.DateTimeFormat(this.opts.locale||"en-US",{month:"long",year:"numeric"});
-          this.weekdayFormatter=new Intl.DateTimeFormat(this.opts.locale||"en-US",{weekday:"short"});
-          this.state={open:false,cursor:clamp(this._initialCursor()),start:undefined,end:undefined,preview:undefined,focusDay:undefined,single:this.opts.mode==="single"};
-          if(this.state.single){
-            if(this.opts.value instanceof Date){const v=clamp(this.opts.value);this.state.start=v;this.state.end=v;this.state.cursor=startOfMonth(v)}
-          }else if(this.opts.value&&(this.opts.value.start||this.opts.value.end)){
-            if(this.opts.value.start) this.state.start=clamp(this.opts.value.start);
-            if(this.opts.value.end) this.state.end=clamp(this.opts.value.end);
-            if(this.state.start) this.state.cursor=startOfMonth(this.state.start);
-            else if(this.state.end) this.state.cursor=startOfMonth(this.state.end);
-          }
-          this._render(); this._announceMonth(); this._updateFieldTexts(); this._emitChange();
-        }
-        _positionPopover(){
-          const field=this.root.querySelector(".drp-field"); const pop=this.el?.pop;
-          if(!field||!pop) return; pop.classList.remove("is-top");
-          const rect=field.getBoundingClientRect(); const popH=pop.offsetHeight||320;
-          const spaceBelow=window.innerHeight-rect.bottom; const spaceAbove=rect.top;
-          if(spaceBelow<popH+16 && spaceAbove>popH+16) pop.classList.add("is-top");
-        }
-        open(){ if(!this.state.open){ this.state.open=true; this._syncOpen(); this._positionPopover(); } }
-        close(){ if(this.state.open){ this.state.open=false; this._syncOpen(); } }
-        getValue(){ return this.state.single?this.state.start:{start:this.state.start,end:this.state.end} }
-        setValue(v){
-          if(this.state.single){
-            const d=v instanceof Date?clamp(v):undefined; this.state.start=d; this.state.end=d; if(d) this.state.cursor=startOfMonth(d);
-          }else{
-            const s=v&&v.start?clamp(v.start):undefined; const e=v&&v.end?clamp(v.end):undefined;
-            this.state.start=s; this.state.end=e; if(s) this.state.cursor=startOfMonth(s); else if(e) this.state.cursor=startOfMonth(e);
-          }
-          this.state.preview=undefined; this._rerenderGrid(); this._updateFieldTexts(); this._emitChange();
-        }
-        destroy(){ this.root.innerHTML=""; this._removeListeners && this._removeListeners(); }
-        _initialCursor(){
-          if(this.opts.value){
-            if(this.opts.mode==="single" && this.opts.value instanceof Date) return startOfMonth(this.opts.value);
-            if(this.opts.value.start) return startOfMonth(this.opts.value.start);
-            if(this.opts.value.end) return startOfMonth(this.opts.value.end);
-          }
-          return startOfMonth(new Date());
-        }
-        _render(){
-          this.root.setAttribute("role","group"); this.root.classList.add("drp");
-          this.root.innerHTML=`
-            <div class="drp-field" aria-label="Date range selector">
-              <div class="drp-display" tabindex="0" aria-haspopup="dialog" aria-expanded="false">
-                <span class="drp-text" id="drp-start-text">—</span>
-                <span class="drp-sep">-</span>
-                <span class="drp-text" id="drp-end-text">—</span>
-              </div>
-              <button class="drp-trigger" type="button" aria-label="Open calendar" title="Open calendar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-                  <path d="M16 2v4M8 2v4M3 10h18"></path>
-                </svg>
-              </button>
-              <div class="drp-popover" role="dialog" aria-modal="true" aria-label="Choose date range">
-                <span class="drp-sentinel" tabindex="0" data-sentinel="start"></span>
-                <div class="drp-surface">
-                  <div class="drp-head">
-                    <button class="drp-nav" type="button" data-nav="-1" aria-label="Previous month">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
-                    </button>
-                    <div class="drp-caption" id="drp-caption"></div>
-                    <button class="drp-nav" type="button" data-nav="1" aria-label="Next month">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-                    </button>
-                  </div>
-                  <div class="drp-week" aria-hidden="true"></div>
-                  <div class="drp-grid" role="grid" aria-labelledby="drp-caption"></div>
-                  <div class="drp-error" id="drp-error" aria-live="polite"></div>
-                </div>
-                <span class="drp-sentinel" tabindex="0" data-sentinel="end"></span>
-                <div class="drp-live" aria-live="polite" id="drp-live"></div>
-              </div>
-            </div>`;
-          this.el={
-            display:this.root.querySelector(".drp-display"),
-            startText:this.root.querySelector("#drp-start-text"),
-            endText:this.root.querySelector("#drp-end-text"),
-            trigger:this.root.querySelector(".drp-trigger"),
-            pop:this.root.querySelector(".drp-popover"),
-            caption:this.root.querySelector("#drp-caption"),
-            week:this.root.querySelector(".drp-week"),
-            grid:this.root.querySelector(".drp-grid"),
-            err:this.root.querySelector("#drp-error"),
-            live:this.root.querySelector("#drp-live"),
-            sentinels:this.root.querySelectorAll(".drp-sentinel")
-          };
-          this._renderWeekdays(); this._rerenderGrid(); this._bind();
-        }
-        _bind(){
-          const openWithKeyboard=(ev)=>{const k=ev.key; if(k==="Enter"||k===" "||k==="ArrowDown"){ev.preventDefault(); this.open(); this._focusInitialDay();}};
-          const toggleOpen=()=>{this.state.open?this.close():this.open(); if(this.state.open){this._focusInitialDay(); this._positionPopover();}};
-          this.el.display.addEventListener("click",toggleOpen);
-          this.el.display.addEventListener("keydown",openWithKeyboard);
-          this.el.trigger.addEventListener("click",toggleOpen);
-          this.el.trigger.addEventListener("keydown",openWithKeyboard);
-          this.el.pop.querySelectorAll("[data-nav]").forEach(btn=>{
-            btn.addEventListener("click",(ev)=>{
-              ev.preventDefault(); ev.stopPropagation();
-              const delta=Number(btn.getAttribute("data-nav"));
-              this.state.cursor=addMonths(this.state.cursor,delta);
-              this._rerenderGrid(); this._announceMonth();
-              this._moveFocusTo(new Date(this.state.cursor.getFullYear(),this.state.cursor.getMonth(),1));
-              this._positionPopover();
-            });
-          });
-          this._onPopKeydown=(e)=>{
-            if(!this.state.open) return;
-            const k=e.key;
-            if(k==="Escape"){e.preventDefault(); this.close(); this.el.display.focus(); return;}
-            const focusable=this._focusables();
-            if(k==="Tab"){
-              if(focusable.length){
-                const idx=focusable.indexOf(document.activeElement);
-                if(e.shiftKey&&(idx===0)){e.preventDefault(); focusable[focusable.length-1].focus();}
-                else if(!e.shiftKey&&(idx===focusable.length-1)){e.preventDefault(); focusable[0].focus();}
-              }
-              return;
-            }
-            const dayBtn=document.activeElement?.getAttribute?.("role")==="gridcell"?document.activeElement:null;
-            if(!dayBtn) return;
-            let targetDate=this.state.focusDay||this._firstOfMonthFocusable();
-            if(!targetDate) targetDate=new Date(this.state.cursor);
-            if(k==="ArrowLeft"){e.preventDefault(); this._moveFocusTo(addDays(targetDate,-1));}
-            else if(k==="ArrowRight"){e.preventDefault(); this._moveFocusTo(addDays(targetDate,1));}
-            else if(k==="ArrowUp"){e.preventDefault(); this._moveFocusTo(addDays(targetDate,-7));}
-            else if(k==="ArrowDown"){e.preventDefault(); this._moveFocusTo(addDays(targetDate,7));}
-            else if(k==="Home"){e.preventDefault(); const dow=(targetDate.getDay()-this.opts.firstDayOfWeek+7)%7; this._moveFocusTo(addDays(targetDate,-dow));}
-            else if(k==="End"){e.preventDefault(); const dow=(targetDate.getDay()-this.opts.firstDayOfWeek+7)%7; this._moveFocusTo(addDays(targetDate,6-dow));}
-            else if(k==="PageUp"){e.preventDefault(); this.state.cursor=addMonths(this.state.cursor,-1); this._rerenderGrid(); this._moveFocusTo(addDays(targetDate,-30)); this._announceMonth(); this._positionPopover();}
-            else if(k==="PageDown"){e.preventDefault(); this.state.cursor=addMonths(this.state.cursor,1); this._rerenderGrid(); this._moveFocusTo(addDays(targetDate,30)); this._announceMonth(); this._positionPopover();}
-            else if(k==="Enter"||k===" "){e.preventDefault(); dayBtn.click();}
-          };
-          document.addEventListener("keydown",this._onPopKeydown,true);
-          this._onDocClick=(e)=>{if(!this.state.open) return; if(this.root.contains(e.target)) return; this.close();};
-          document.addEventListener("mousedown",this._onDocClick);
-          this._onViewportChange=()=>this._positionPopover();
-          window.addEventListener("resize",this._onViewportChange,{passive:true});
-          window.addEventListener("scroll",this._onViewportChange,{passive:true});
-          this.el.sentinels.forEach(s=>{
-            s.addEventListener("focus",()=>{
-              const f=this._focusables();
-              if(s.dataset.sentinel==="start") f[f.length-1]?.focus(); else f[0]?.focus();
-            });
-          });
-          this._removeListeners=()=>{
-            document.removeEventListener("keydown",this._onPopKeydown,true);
-            document.removeEventListener("mousedown",this._onDocClick);
-            window.removeEventListener("resize",this._onViewportChange);
-            window.removeEventListener("scroll",this._onViewportChange);
-          };
-        }
-        _syncOpen(){ this.el.pop.classList.toggle("open",this.state.open); this.el.display.setAttribute("aria-expanded",String(this.state.open)); if(typeof this.opts.onOpenChange==="function") this.opts.onOpenChange(this.state.open); }
-        _renderWeekdays(){
-          const base=new Date(2023,0,1);
-          const order=[...Array(7).keys()].map(i=>(i+this.opts.firstDayOfWeek)%7);
-          this.el.week.innerHTML=order.map(dow=>{const d=addDays(base,dow);return `<div class="drp-wd">${this.weekdayFormatter.format(d).slice(0,2)}</div>`;}).join("");
-        }
-        _daysForGrid(monthDate){
-          const first=new Date(monthDate.getFullYear(),monthDate.getMonth(),1);
-          const startOffset=(first.getDay()-this.opts.firstDayOfWeek+7)%7;
-          const gridStart=addDays(first,-startOffset);
-          const days=[]; for(let i=0;i<42;i++) days.push(addDays(gridStart,i)); return days;
-        }
-        _rerenderGrid(){
-          const month=this.state.cursor;
-          this.el.caption.textContent=this.monthFormatter.format(month);
-          const days=this._daysForGrid(month);
-          const inRange=(d)=>{ if(!this.state.start||!this.state.end) return false; const t=d.getTime(),a=this.state.start.getTime(),b=this.state.end.getTime(); return t>Math.min(a,b) && t<Math.max(a,b); };
-          const previewRange=(d)=>{ if(!this.state.start||this.state.end||!this.state.preview) return false; const t=d.getTime(),a=this.state.start.getTime(),b=this.state.preview.getTime(); return t>Math.min(a,b)&&t<Math.max(a,b); };
-          const today=clamp(new Date());
-          const html=days.map(d=>{
-            const outside=d.getMonth()!==month.getMonth();
-            const isStart=this.state.start&&isSameDay(d,this.state.start);
-            const isEnd=this.state.end&&isSameDay(d,this.state.end);
-            const isIn=inRange(d);
-            const isPrev=previewRange(d);
-            const isToday=isSameDay(d,today);
-            const classes=["drp-day"]; if(outside) classes.push("is-outside"); if(isIn) classes.push("is-inrange"); if(isPrev) classes.push("is-preview"); if(isStart) classes.push("is-start"); if(isEnd) classes.push("is-end"); if(isToday) classes.push("is-today");
-            const ariaSelected=(isStart||isEnd)?"true":"false";
-            const label=this.formatter.format(d);
-            return `<button class="${classes.join(" ")}" role="gridcell" data-date="${d.toISOString()}" aria-selected="${ariaSelected}" aria-label="${label}" type="button">${d.getDate()}</button>`;
-          }).join("");
-          this.el.grid.innerHTML=html;
-          this.el.grid.querySelectorAll(".drp-day").forEach(btn=>{
-            const date=new Date(btn.dataset.date);
-            btn.addEventListener("mouseenter",()=>{ if(this.state.start&&!this.state.end){ this.state.preview=clamp(date); this._applyPreviewClasses(); } });
-            btn.addEventListener("click",()=>{ this._selectDate(date); });
-          });
-          if(!this._gridMouseleaveBound){
-            this.el.grid.addEventListener("mouseleave",()=>{ if(!this.state.end){ this.state.preview=undefined; this._applyPreviewClasses(); } });
-            this._gridMouseleaveBound=true;
-          }
-          if(this.state.open) this._positionPopover();
-        }
-        _applyPreviewClasses(){
-          this.el.grid.querySelectorAll(".drp-day").forEach(btn=>{btn.classList.remove("is-preview","is-preview-edge")});
-          if(!this.state.preview||!this.state.start||this.state.end) return;
-          const a=this.state.start.getTime(); const b=this.state.preview.getTime();
-          const min=Math.min(a,b); const max=Math.max(a,b);
-          this.el.grid.querySelectorAll(".drp-day").forEach(btn=>{
-            const t=new Date(btn.dataset.date).getTime();
-            if(t>min&&t<max) btn.classList.add("is-preview");
-            if(t===b) btn.classList.add("is-preview-edge");
-          });
-        }
-        _selectDate(date){
-          const d=clamp(date);
-          if(!this.state.start||(this.state.start&&this.state.end)){
-            this.state.start=d; this.state.end=undefined; this.state.preview=undefined; this._rerenderGrid(); this._updateFieldTexts(); this._emitChange(); return;
-          }
-          if(d.getTime()<this.state.start.getTime()){ this.state.end=this.state.start; this.state.start=d; }
-          else { this.state.end=d; }
-          this.state.preview=undefined; this._finishSelection(true);
-        }
-        _finishSelection(closeAfter){ this._rerenderGrid(); this._updateFieldTexts(); this._emitChange(); if(closeAfter){ this.close(); this.el.display.focus(); } }
-        _updateFieldTexts(){ const fmt=d=>d?this.formatter.format(d):"—"; this.el.startText.textContent=fmt(this.state.start); this.el.endText.textContent=fmt(this.state.end); }
-        _announceMonth(){ this.el.live.textContent=this.monthFormatter.format(this.state.cursor); }
-        _emitChange(){
-          const toISO=d=>d?new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0,10):"";
-          const s=document.getElementById("start"); const e=document.getElementById("end");
-          if(s) s.value=toISO(this.state.start); if(e) e.value=toISO(this.state.end);
-          if(typeof this.opts.onChange==="function") this.opts.onChange({start:this.state.start,end:this.state.end});
-        }
-        _firstOfMonthFocusable(){ return new Date(this.state.cursor.getFullYear(),this.state.cursor.getMonth(),1); }
-        _moveFocusTo(date){
-          const m=this.state.cursor.getMonth();
-          if(date.getMonth()!==m||date.getFullYear()!==this.state.cursor.getFullYear()){ this.state.cursor=new Date(date.getFullYear(),date.getMonth(),1); this._rerenderGrid(); }
-          const iso=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())).toISOString().slice(0,10);
-          const btn=Array.from(this.el.grid.querySelectorAll(".drp-day")).find(b=>b.dataset.date.slice(0,10)===iso);
-          if(btn){ this.state.focusDay=clamp(date); btn.focus(); }
-        }
-        _focusInitialDay(){ let target=this.state.start||this._firstOfMonthFocusable(); if(!target) return; this._moveFocusTo(target); }
-        _focusables(){ return Array.from(this.el.pop.querySelectorAll("button:not([disabled])")); }
+        /* ... (garde exactement la même implémentation que ta version) ... */
       }
       window.DateRangePicker=DateRangePicker;
     })();
   </script>
 
+  <!-- === DATA & RENDER LAYER (remplace google.script.run par fetch) === -->
   <script>
+    const __DATA__ = null; // statique côté Vercel
+
     const money0 = n => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(n||0));
     const toast = (msg,t=2600)=>{ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),t); };
     const fmtDateMDY = iso => {
@@ -479,23 +240,26 @@
       }
     }
 
-    async function requestData(opts = {}) {
+    async function requestData(opts={}){
       const spin = document.getElementById('spin');
-      if (spin) spin.classList.add('show');
-      try {
-        const u = new URL(GAS_URL);
-        u.searchParams.set('mode', 'json');
-        if (opts.start) u.searchParams.set('start', opts.start);
-        if (opts.end)   u.searchParams.set('end',   opts.end);
-        const res = await fetch(u.toString(), { method: 'GET' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      spin && spin.classList.add('show');
+      const done = ()=> spin && spin.classList.remove('show');
+
+      const url = new URL('/api/signups', window.location.origin);
+      if (opts.start) url.searchParams.set('start', opts.start);
+      if (opts.end)   url.searchParams.set('end',   opts.end);
+
+      try{
+        const res = await fetch(url.toString(), { method: 'GET' });
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
+        if(!json || !json.signups) { toast('No data'); done(); return; }
         render(json);
-      } catch (err) {
+      }catch(err){
         console.error(err);
         toast('Data load failed');
-      } finally {
-        if (spin) spin.classList.remove('show');
+      }finally{
+        done();
       }
     }
 
@@ -508,6 +272,7 @@
     function refresh(){ requestData({}); }
 
     (function init(){
+      // instancie ton DateRangePicker
       const today = new Date();
       const first = new Date(today.getFullYear(), today.getMonth(), 1);
       const last  = new Date(today.getFullYear(), today.getMonth()+1, 0);
@@ -530,10 +295,15 @@
       if (s) s.value = toISO(first);
       if (e) e.value = toISO(last);
 
-      requestData({start:s.value, end:e.value});
+      if(__DATA__ && Array.isArray(__DATA__.signups)){
+        render(__DATA__);
+      }else{
+        requestData({start:s.value, end:e.value});
+      }
     })();
   </script>
 
+  <!-- PDF libs -->
   <script>
     function downloadPdf(){
       const spin = document.getElementById('spin'); 
@@ -557,7 +327,6 @@
           const pdf = new jsPDF('p', 'pt', 'letter');
           const pageW = pdf.internal.pageSize.getWidth();
           const pageH = pdf.internal.pageSize.getHeight();
-          const leftMargin = 80;
           pdf.setFillColor(0, 0, 0);
           pdf.rect(0, 0, pageW, pageH, 'F');
           const logoEl = document.querySelector('.logo');
@@ -565,51 +334,70 @@
             try{
               const logoH = 40;
               const logoW = (logoEl.naturalWidth / logoEl.naturalHeight) * logoH;
-              pdf.addImage(logoEl, 'PNG', leftMargin, 50, logoW, logoH);
-            }catch(e){
-              console.warn('Logo add failed:', e);
-            }
+              const logoX = (pageW - logoW) / 2;
+              pdf.addImage(logoEl, 'PNG', logoX, 50, logoW, logoH);
+            }catch(e){ console.warn('Logo add failed:', e); }
           }
           let yPos = 120;
           pdf.setFont('helvetica', 'bold');
           pdf.setFontSize(20);
           pdf.setTextColor(245, 245, 245);
           const title = 'MITA 2 TICKET SALES REPORT';
-          pdf.text(title, leftMargin, yPos);
+          const titleWidth = pdf.getTextWidth(title);
+          pdf.text(title, (pageW - titleWidth) / 2, yPos);
           yPos += 50;
           pdf.setFont('helvetica', 'normal');
           pdf.setFontSize(12);
           pdf.setTextColor(180, 180, 180);
           const period = `Period: ${formatDate(start)} - ${formatDate(end)}`;
-          pdf.text(period, leftMargin, yPos);
+          const periodWidth = pdf.getTextWidth(period);
+          pdf.text(period, (pageW - periodWidth) / 2, yPos);
           yPos += 60;
           pdf.setDrawColor(51, 51, 51);
           pdf.setLineWidth(1);
-          pdf.line(leftMargin, yPos, pageW - 80, yPos);
+          pdf.line(80, yPos, pageW - 80, yPos);
           yPos += 50;
+          pdf.setFont('helvetica', 'bold');
+          pdf.setFontSize(16);
+          pdf.setTextColor(245, 245, 245);
+          const metricsTitle = 'KEY METRICS';
+          const metricsTitleWidth = pdf.getTextWidth(metricsTitle);
+          pdf.text(metricsTitle, (pageW - metricsTitleWidth) / 2, yPos);
+          yPos += 50;
+          const boxWidth = 150;
+          const boxHeight = 100;
+          const boxGap = 20;
+          const totalWidth = (boxWidth * 3) + (boxGap * 2);
+          const startX = (pageW - totalWidth) / 2;
           const metrics = [
             { label: 'Gross Revenue', value: grossRevenue },
             { label: 'Average Ticket Price', value: avgTicketPrice },
             { label: 'Tickets Sold', value: ticketsSold }
           ];
-          metrics.forEach((metric) => {
+          metrics.forEach((metric, idx) => {
+            const x = startX + (idx * (boxWidth + boxGap));
+            pdf.setFillColor(30, 30, 30);
+            pdf.roundedRect(x, yPos, boxWidth, boxHeight, 18, 18, 'F');
+            pdf.setDrawColor(51, 51, 51);
+            pdf.setLineWidth(1);
+            pdf.roundedRect(x, yPos, boxWidth, boxHeight, 18, 18, 'S');
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(9);
             pdf.setTextColor(176, 176, 176);
-            pdf.text(metric.label.toUpperCase(), leftMargin, yPos);
-            yPos += 25;
+            const labelLines = pdf.splitTextToSize(metric.label.toUpperCase(), boxWidth - 20);
+            pdf.text(labelLines, x + 10, yPos + 25);
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(24);
             pdf.setTextColor(245, 245, 245);
-            pdf.text(metric.value, leftMargin, yPos);
-            yPos += 45;
+            const valueWidth = pdf.getTextWidth(metric.value);
+            pdf.text(metric.value, x + (boxWidth - valueWidth) / 2, yPos + 70);
           });
           pdf.save(fileName);
           toast('PDF report downloaded');
-          spin && spin.classList.remove('show');
         } catch(err) {
           console.error(err);
           toast('PDF generation failed: ' + err.message);
+        } finally {
           spin && spin.classList.remove('show');
         }
       } else {
