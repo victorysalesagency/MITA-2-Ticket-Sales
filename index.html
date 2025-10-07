@@ -327,6 +327,7 @@
           const pdf = new jsPDF('p', 'pt', 'letter');
           const pageW = pdf.internal.pageSize.getWidth();
           const pageH = pdf.internal.pageSize.getHeight();
+          const leftMargin = 80;
           pdf.setFillColor(0, 0, 0);
           pdf.rect(0, 0, pageW, pageH, 'F');
           const logoEl = document.querySelector('.logo');
@@ -334,70 +335,51 @@
             try{
               const logoH = 40;
               const logoW = (logoEl.naturalWidth / logoEl.naturalHeight) * logoH;
-              const logoX = (pageW - logoW) / 2;
-              pdf.addImage(logoEl, 'PNG', logoX, 50, logoW, logoH);
-            }catch(e){ console.warn('Logo add failed:', e); }
+              pdf.addImage(logoEl, 'PNG', leftMargin, 50, logoW, logoH);
+            }catch(e){
+              console.warn('Logo add failed:', e);
+            }
           }
           let yPos = 120;
           pdf.setFont('helvetica', 'bold');
           pdf.setFontSize(20);
           pdf.setTextColor(245, 245, 245);
           const title = 'MITA 2 TICKET SALES REPORT';
-          const titleWidth = pdf.getTextWidth(title);
-          pdf.text(title, (pageW - titleWidth) / 2, yPos);
+          pdf.text(title, leftMargin, yPos);
           yPos += 50;
           pdf.setFont('helvetica', 'normal');
           pdf.setFontSize(12);
           pdf.setTextColor(180, 180, 180);
           const period = `Period: ${formatDate(start)} - ${formatDate(end)}`;
-          const periodWidth = pdf.getTextWidth(period);
-          pdf.text(period, (pageW - periodWidth) / 2, yPos);
+          pdf.text(period, leftMargin, yPos);
           yPos += 60;
           pdf.setDrawColor(51, 51, 51);
           pdf.setLineWidth(1);
-          pdf.line(80, yPos, pageW - 80, yPos);
+          pdf.line(leftMargin, yPos, pageW - 80, yPos);
           yPos += 50;
-          pdf.setFont('helvetica', 'bold');
-          pdf.setFontSize(16);
-          pdf.setTextColor(245, 245, 245);
-          const metricsTitle = 'KEY METRICS';
-          const metricsTitleWidth = pdf.getTextWidth(metricsTitle);
-          pdf.text(metricsTitle, (pageW - metricsTitleWidth) / 2, yPos);
-          yPos += 50;
-          const boxWidth = 150;
-          const boxHeight = 100;
-          const boxGap = 20;
-          const totalWidth = (boxWidth * 3) + (boxGap * 2);
-          const startX = (pageW - totalWidth) / 2;
           const metrics = [
             { label: 'Gross Revenue', value: grossRevenue },
             { label: 'Average Ticket Price', value: avgTicketPrice },
             { label: 'Tickets Sold', value: ticketsSold }
           ];
-          metrics.forEach((metric, idx) => {
-            const x = startX + (idx * (boxWidth + boxGap));
-            pdf.setFillColor(30, 30, 30);
-            pdf.roundedRect(x, yPos, boxWidth, boxHeight, 18, 18, 'F');
-            pdf.setDrawColor(51, 51, 51);
-            pdf.setLineWidth(1);
-            pdf.roundedRect(x, yPos, boxWidth, boxHeight, 18, 18, 'S');
+          metrics.forEach((metric) => {
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(9);
             pdf.setTextColor(176, 176, 176);
-            const labelLines = pdf.splitTextToSize(metric.label.toUpperCase(), boxWidth - 20);
-            pdf.text(labelLines, x + 10, yPos + 25);
+            pdf.text(metric.label.toUpperCase(), leftMargin, yPos);
+            yPos += 25;
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(24);
             pdf.setTextColor(245, 245, 245);
-            const valueWidth = pdf.getTextWidth(metric.value);
-            pdf.text(metric.value, x + (boxWidth - valueWidth) / 2, yPos + 70);
+            pdf.text(metric.value, leftMargin, yPos);
+            yPos += 45;
           });
           pdf.save(fileName);
           toast('PDF report downloaded');
+          spin && spin.classList.remove('show');
         } catch(err) {
           console.error(err);
           toast('PDF generation failed: ' + err.message);
-        } finally {
           spin && spin.classList.remove('show');
         }
       } else {
