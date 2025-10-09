@@ -727,6 +727,7 @@
                             <th onclick="sortTable(1)">Client Name</th>
                             <th onclick="sortTable(2)">Email Address</th>
                             <th onclick="sortTable(3)">Ticket Price</th>
+                            <th onclick="sortTable(4)">Ticket Tier</th>
                             <th onclick="sortTable(4)">Gross Revenue</th>
                             <th onclick="sortTable(5)">Ticket Count</th>
                         </tr>
@@ -1010,6 +1011,18 @@
             return `${mo}/${d}/${y}`;
         };
 
+  // Derive a simple tier from the ticket price if not provided by API
+  function tierOf(price) {
+    const p = Number(price || 0);
+    if (p >= 1000) return 'VIP';
+    if (p >= 500)  return 'Premium';
+    if (p >= 200)  return 'Standard';
+    if (p >  0)    return 'Basic';
+    return '';
+  }
+
+
+
         function setKPIs(rows) {
             const totalGross = rows.reduce((s, r) => s + (Number(r.grossRevenue) || 0), 0);
             const totalTickets = rows.reduce((s, r) => s + (Number(r.ticketCount) || 0), 0);
@@ -1031,6 +1044,7 @@
             <td>${r.clientName || ''}</td>
             <td>${r.email || ''}</td>
             <td>${money0(r.ticketPrice || 0)}</td>
+            <td>${(r.ticketTier ?? tierOf(r.ticketPrice)) || ''}</td>
             <td>${money0(r.grossRevenue || 0)}</td>
             <td>${Number(r.ticketCount || 0)}</td>
           </tr>
