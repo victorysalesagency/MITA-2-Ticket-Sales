@@ -98,10 +98,7 @@
     .card{background:linear-gradient(45deg,hsla(0,0%,12%,.50),hsla(0,0%,12%,.20),hsla(0,0%,12%,.50));backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);color:var(--ink);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow-soft);border:1px solid var(--border-soft);min-width:0}
     .table-wrap{overflow:auto;border-radius:10px}
     .table{width:100%;border-collapse:separate;border-spacing:0;margin-top:4px;table-layout:auto;min-width:900px}
-    thead th{position:sticky;top:0;z-index:3;padding:12px var(--cell-x);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;border-bottom:1px solid var(--border-soft);background:var(--card);white-space:nowrap;cursor:pointer;user-select:none;transition:background 0.15s ease}
-    thead th:hover{background:var(--ghost-hover)}
-    thead th.sorted-asc::after{content:" ▲";font-size:10px;opacity:0.7;margin-left:6px}
-    thead th.sorted-desc::after{content:" ▼";font-size:10px;opacity:0.7;margin-left:6px}
+    thead th{position:sticky;top:0;z-index:3;padding:12px var(--cell-x);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;border-bottom:1px solid var(--border-soft);background:var(--card);white-space:nowrap}
     #signupsTable tbody td{padding:16px var(--cell-x);border-bottom:1px solid var(--border-soft);font-size:16px;color:var(--ink);background:linear-gradient(0deg,rgba(0,0,0,0),rgba(0,0,0,0));height:60px;box-sizing:border-box;vertical-align:middle}
     tbody tr:last-child td{border-bottom:none}
     tbody tr:hover{background:var(--row-hover)}
@@ -164,12 +161,12 @@
         <table class="table" id="signupsTable">
           <thead>
             <tr>
-              <th onclick="sortTable(0)">Date</th>
-              <th onclick="sortTable(1)">Client Name</th>
-              <th onclick="sortTable(2)">Email Address</th>
-              <th onclick="sortTable(3)">Ticket Price</th>
-              <th onclick="sortTable(4)">Gross Revenue</th>
-              <th onclick="sortTable(5)">Ticket Count</th>
+              <th>Date</th>
+              <th>Client Name</th>
+              <th>Email Address</th>
+              <th>Ticket Price</th>
+              <th>Gross Revenue</th>
+              <th>Ticket Count</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
@@ -180,6 +177,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <!-- Use Vercel proxy instead of direct Apps Script URL -->
   <script>
     const GAS_URL = '/api/signups';
   </script>
@@ -486,6 +484,7 @@
       const spin = document.getElementById('spin');
       if (spin) spin.classList.add('show');
       try {
+        // Build absolute URL against current origin so it works on Vercel
         const u = new URL(GAS_URL, window.location.origin);
         u.searchParams.set('mode', 'json');
         if (opts.start) u.searchParams.set('start', opts.start);
@@ -508,59 +507,7 @@
       if(!s || !e){ toast('Select a date range'); return; }
       requestData({start:s, end:e});
     }
-    
     function refresh(){ requestData({}); }
-
-    function sortTable(columnIndex) {
-      const table = document.getElementById("signupsTable");
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.rows);
-      
-      const th = table.querySelector("thead").rows[0].cells[columnIndex];
-      const currentOrder = th.dataset.order || '';
-      const ascending = currentOrder !== 'asc';
-      
-      rows.sort((a, b) => {
-        let aVal = a.cells[columnIndex].textContent.trim();
-        let bVal = b.cells[columnIndex].textContent.trim();
-        
-        if (aVal.includes(')) {
-          aVal = aVal.replace(/[$,]/g, '');
-          bVal = bVal.replace(/[$,]/g, '');
-        }
-        
-        if (columnIndex === 0 && aVal.includes('/')) {
-          const parseDate = (str) => {
-            const [m, d, y] = str.split('/').map(Number);
-            return new Date(y, m - 1, d).getTime();
-          };
-          const aTime = parseDate(aVal);
-          const bTime = parseDate(bVal);
-          return ascending ? aTime - bTime : bTime - aTime;
-        }
-        
-        const aNum = parseFloat(aVal);
-        const bNum = parseFloat(bVal);
-        
-        if (!isNaN(aNum) && !isNaN(bNum)) {
-          return ascending ? aNum - bNum : bNum - aNum;
-        }
-        
-        return ascending 
-          ? aVal.localeCompare(bVal, 'en', { sensitivity: 'base' })
-          : bVal.localeCompare(aVal, 'en', { sensitivity: 'base' });
-      });
-      
-      rows.forEach(row => tbody.appendChild(row));
-      
-      table.querySelectorAll('thead th').forEach(h => {
-        delete h.dataset.order;
-        h.classList.remove('sorted-asc', 'sorted-desc');
-      });
-      
-      th.dataset.order = ascending ? 'asc' : 'desc';
-      th.classList.add(ascending ? 'sorted-asc' : 'sorted-desc');
-    }
 
     (function init(){
       const today = new Date();
