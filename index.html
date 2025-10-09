@@ -621,6 +621,68 @@
     }
   </script>
 
+  <script>
+    // Add this function to your existing <script> section
+function sortTable(columnIndex) {
+  const table = document.getElementById("signupsTable");
+  const tbody = table.querySelector("tbody");
+  const rows = Array.from(tbody.rows);
+  
+  // Get the header cell to track sort direction
+  const th = table.querySelector("thead").rows[0].cells[columnIndex];
+  const currentOrder = th.dataset.order || '';
+  const ascending = currentOrder !== 'asc';
+  
+  // Sort rows based on column content
+  rows.sort((a, b) => {
+    let aVal = a.cells[columnIndex].textContent.trim();
+    let bVal = b.cells[columnIndex].textContent.trim();
+    
+    // Handle currency values (remove $ and commas)
+    if (aVal.includes('$')) {
+      aVal = aVal.replace(/[$,]/g, '');
+      bVal = bVal.replace(/[$,]/g, '');
+    }
+    
+    // Handle dates in M/D/YYYY format
+    if (columnIndex === 0 && aVal.includes('/')) {
+      const parseDate = (str) => {
+        const [m, d, y] = str.split('/').map(Number);
+        return new Date(y, m - 1, d).getTime();
+      };
+      const aTime = parseDate(aVal);
+      const bTime = parseDate(bVal);
+      return ascending ? aTime - bTime : bTime - aTime;
+    }
+    
+    // Try numeric comparison
+    const aNum = parseFloat(aVal);
+    const bNum = parseFloat(bVal);
+    
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return ascending ? aNum - bNum : bNum - aNum;
+    }
+    
+    // Fall back to string comparison
+    return ascending 
+      ? aVal.localeCompare(bVal, 'en', { sensitivity: 'base' })
+      : bVal.localeCompare(aVal, 'en', { sensitivity: 'base' });
+  });
+  
+  // Re-append rows in sorted order
+  rows.forEach(row => tbody.appendChild(row));
+  
+  // Update sort indicators on all headers
+  table.querySelectorAll('thead th').forEach(h => {
+    delete h.dataset.order;
+    h.classList.remove('sorted-asc', 'sorted-desc');
+  });
+  
+  th.dataset.order = ascending ? 'asc' : 'desc';
+  th.classList.add(ascending ? 'sorted-asc' : 'sorted-desc');
+}
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </body>
