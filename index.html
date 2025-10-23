@@ -151,29 +151,34 @@
             width: 1.5rem;
             height: 1.5rem
         }
+        
+      .spinner {
+        display: none;
+      }
 
-        .spinner {
-            display: none
+      .spinner.show {
+        display: inline-block;
+        margin-left: 0;
+        border: 0.125rem solid var(--spinner);
+        border-top-color: var(--brand-soft);
+        border-radius: 50%;
+        height: 1.25rem;
+        width: 1.25rem;
+        animation: spin 1s linear infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
         }
+      }
 
-        .spinner.show {
-            display: inline-block;
-            margin-left: 6px;
-            border: 2px solid rgba(var(--white-rgb), .15);
-            border-top-color: var(--brand);
-            border-radius: 50%;
-            width: 14px;
-            height: 14px;
-            animation: spin 1s linear infinite;
-            vertical-align: middle
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg)
-            }
-        }
-
+      #applyBtn:has(.spinner.show) svg {
+        visibility: hidden;
+        display: none;
+      }
+        
         .drp {
             --drp-bg: var(--input-bg);
             --drp-border: var(--border);
