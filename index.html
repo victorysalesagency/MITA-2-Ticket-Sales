@@ -728,8 +728,8 @@
                             <th onclick="sortTable(2)">Email Address</th>
                             <th onclick="sortTable(3)">Price</th>
                             <th onclick="sortTable(4)">Tier</th>
-                            <th onclick="sortTable(4)">Revenue</th>
-                            <th onclick="sortTable(5)">Quantity</th>
+                            <th onclick="sortTable(5)">Revenue</th>
+                            <th onclick="sortTable(6)">Quantity</th>
                         </tr>
                     </thead>
                     <tbody id="tbody"></tbody>
@@ -1017,7 +1017,7 @@
     if (p >= 1000) return 'VIP';
     if (p >= 500)  return 'Premium';
     if (p >= 200)  return 'Standard';
-    if (p >  0)    return 'Basic';
+    if (p >  0)    return 'General Admission';
     return '';
   }
 
@@ -1044,7 +1044,7 @@
             <td>${r.clientName || ''}</td>
             <td>${r.email || ''}</td>
             <td>${money0(r.ticketPrice || 0)}</td>
-            <td>${(r.ticketTier ?? tierOf(r.ticketPrice)) || ''}</td>
+            <td>${r.ticketTier || ''}</td>
             <td>${money0(r.grossRevenue || 0)}</td>
             <td>${Number(r.ticketCount || 0)}</td>
           </tr>
