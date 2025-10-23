@@ -725,11 +725,10 @@
                         <tr>
                             <th onclick="sortTable(0)">Date</th>
                             <th onclick="sortTable(1)">Client</th>
-                            <th onclick="sortTable(2)">Email Address</th>
-                            <th onclick="sortTable(3)">Price</th>
-                            <th onclick="sortTable(4)">Tier</th>
-                            <th onclick="sortTable(5)">Revenue</th>
-                            <th onclick="sortTable(6)">Quantity</th>
+                            <th onclick="sortTable(2)">Price</th>
+                            <th onclick="sortTable(3)">Tier</th>
+                            <th onclick="sortTable(4)">Revenue</th>
+                            <th onclick="sortTable(5)">Quantity</th>
                         </tr>
                     </thead>
                     <tbody id="tbody"></tbody>
@@ -1041,8 +1040,7 @@
                 const html = rows.map(r => `
           <tr>
             <td>${fmtDateMDY(r.date)}</td>
-            <td>${r.clientName || ''}</td>
-            <td>${r.email || ''}</td>
+            <td><div style="font-weight:600">${r.clientName || ''}</div><div style="font-size:0.813rem;color:var(--muted);margin-top:2px">${r.email || ''}</div></td>
             <td>${money0(r.ticketPrice || 0)}</td>
             <td>${r.ticketTier || ''}</td>
             <td>${money0(r.grossRevenue || 0)}</td>
