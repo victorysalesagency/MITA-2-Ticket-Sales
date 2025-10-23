@@ -12,32 +12,32 @@
     <style>
         :root {
             --brand: hsl(40, 50%, 60%);
-            --brand-dark: hsl(40, 51%, 20%);
+            --brand-dark: hsl(40, 50%, 20%);
             --brand-soft: hsl(40, 50%, 75%);
-            --accent-dark-brown: hsl(40, 51%, 20%);
+            --accent-dark-brown: hsl(40, 50%, 20%);
             --accent-light-gold: hsl(40, 50%, 65%);
             --accent-cream: hsl(40, 50%, 75%);
             --accent-gold: hsl(40, 50%, 60%);
-            --accent-bronze: hsl(39, 50%, 24%);
-            --white: #fff;
+            --accent-bronze: hsl(40, 50%, 25%);
+            --white: hsl(0, 0%, 100%);
             --white-rgb: 255, 255, 255;
-            --black: #000;
+            --black: hsl(0, 0%, 0%);
             --black-rgb: 0, 0, 0;
             --ink: hsl(0, 0%, 96%);
-            --muted: hsl(0, 0%, 69%);
-            --input-bg: #171717;
-            --card: #1e1e1e;
-            --border: #333;
-            --border-soft: #2a2a2a;
-            --border-softer: #3a3a3a;
-            --ghost-hover: #2b2b2b;
-            --shadow-strong: 0 8px 24px rgba(0, 0, 0, .4);
-            --shadow-soft: 0 4px 16px rgba(0, 0, 0, .3);
-            --radius: 18px;
-            --ctrl-h: 44px;
-            --ctrl-r: 12px;
-            --row-hover: rgba(255, 255, 255, .04);
-            --cell-x: 12px;
+            --muted: hsl(0, 0%, 70%);
+            --input-bg: hsl(0, 0%, 10%);
+            --card: hsl(0, 0%, 12%);
+            --border: hsl(0, 0%, 20%);
+            --border-soft: hsl(0, 0%, 15%);
+            --border-softer: hsl(0, 0%, 25%);
+            --ghost-hover: hsl(0, 0%, 18%);
+            --shadow-strong: 0 0.5rem 1.5rem hsla(0, 0%, 0%, 0.4);
+            --shadow-soft: 0 0.25rem 1rem hsla(0, 0%, 0%, 0.3);
+            --radius: 1.125rem;
+            --ctrl-h: 2.75rem;
+            --ctrl-r: 0.75rem;
+            --row-hover: hsla(0, 0%, 100%, 0.04);
+            --cell-x: 0.75rem;
         }
 
         html {
@@ -434,7 +434,7 @@
 
         .kpis {
             display: grid;
-            grid-template-columns: repeat(3, minmax(220px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-top: 8px
         }
@@ -723,41 +723,6 @@
                 <table class="table" id="signupsTable">
                     <thead>
                         <tr>
-                            <th onclick="sortTable(0)">Date</th>
-                            <th onclick="sortTable(1)">Client</th>
-                            <th onclick="sortTable(2)">Price</th>
-                            <th onclick="sortTable(3)">Revenue</th>
-                            <th onclick="sortTable(4)">Quantity</th>
-                            <th onclick="sortTable(5)">Tier</th>
-                            <th onclick="sortTable(6)">Processor</th>
-                            <th onclick="sortTable(0)">Date</th>
-                            <th onclick="sortTable(1)">Client</th>
-                            <th onclick="sortTable(2)">Price</th>
-                            <th onclick="sortTable(3)">Revenue</th>
-                            <th onclick="sortTable(4)">Quantity</th>
-                            <th onclick="sortTable(5)">Tier</th>
-                            <th onclick="sortTable(6)">Processor</th>
-                            <th onclick="sortTable(0)">Date</th>
-                            <th onclick="sortTable(1)">Client</th>
-                            <th onclick="sortTable(2)">Price</th>
-                            <th onclick="sortTable(3)">Revenue</th>
-                            <th onclick="sortTable(4)">Quantity</th>
-                            <th onclick="sortTable(5)">Tier</th>
-                            <th onclick="sortTable(6)">Processor</th>
-                            <th onclick="sortTable(0)">Date</th>
-                            <th onclick="sortTable(1)">Client</th>
-                            <th onclick="sortTable(2)">Price</th>
-                            <th onclick="sortTable(3)">Revenue</th>
-                            <th onclick="sortTable(4)">Quantity</th>
-                            <th onclick="sortTable(5)">Tier</th>
-                            <th onclick="sortTable(6)">Processor</th>
-                            <th onclick="sortTable(0)">Date</th>
-                            <th onclick="sortTable(1)">Client</th>
-                            <th onclick="sortTable(2)">Price</th>
-                            <th onclick="sortTable(3)">Revenue</th>
-                            <th onclick="sortTable(4)">Quantity</th>
-                            <th onclick="sortTable(5)">Tier</th>
-                            <th onclick="sortTable(6)">Processor</th>
                             <th onclick="sortTable(0)">Date</th>
                             <th onclick="sortTable(1)">Client</th>
                             <th onclick="sortTable(2)">Price</th>
