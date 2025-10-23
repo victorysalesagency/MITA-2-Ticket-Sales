@@ -2,45 +2,47 @@
 <html lang="en">
 
 <head>
-    <base target="_top" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>MITA 2 Ticket Sales</title>
-    <link rel="icon"
-        href="https://storage.googleapis.com/msgsndr/tfaMfEcKzbKeor4FyoMS/media/67d635061b97ac1cbd002603.png"
-        type="image/png" />
-    <style>
-:root {
-  --bg: hsl(0, 0%, 5%);
-  --brand: hsl(40, 50%, 60%);
-  --brand-dark: hsl(40, 51%, 20%);
-  --brand-soft: hsl(40, 50%, 75%);
-  --accent-dark-brown: hsl(40, 51%, 20%);
-  --accent-light-gold: hsl(40, 50%, 65%);
-  --accent-cream: hsl(40, 50%, 75%);
-  --accent-gold: hsl(40, 50%, 60%);
-  --accent-bronze: hsl(39, 50%, 24%);
-  --spinner: hsla(40, 50%, 20%, 0.5);
-  --white: hsl(0, 0%, 100%);
-  --white-rgb: 255, 255, 255;
-  --black: hsl(0, 0%, 0%);
-  --black-rgb: 0, 0, 0;
-  --ink: hsl(0, 0%, 96%);
-  --muted: hsl(0, 0%, 70%);
-  --input-bg: hsl(0, 0%, 10%);
-  --card: hsl(0, 0%, 12%);
-  --border: hsl(0, 0%, 20%);
-  --border-soft: hsl(0, 0%, 15%);
-  --border-softer: hsl(0, 0%, 24%);
-  --ghost-hover: hsl(0, 0%, 18%);
-  --shadow-strong: 0 0.5rem 1.5rem hsla(0, 0%, 0%, 0.4);
-  --shadow-soft: 0 0.25rem 1rem hsla(0, 0%, 0%, 0.4);
-  --radius: 1.125rem;
-  --ctrl-h: 2.75rem;
-  --ctrl-r: 0.75rem;
-  --row-hover: hsla(0, 0%, 100%, 0.05);
-  --cell-x: 0.75rem;
-}
+  <base target="_top" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MITA 2 Ticket Sales</title>
+  <link
+    rel="icon"
+    href="https://storage.googleapis.com/msgsndr/tfaMfEcKzbKeor4FyoMS/media/67d635061b97ac1cbd002603.png"
+    type="image/png"
+  />
+  <style>
+    :root {
+      --bg: hsl(0, 0%, 5%);
+      --brand: hsl(40, 50%, 60%);
+      --brand-dark: hsl(40, 51%, 20%);
+      --brand-soft: hsl(40, 50%, 75%);
+      --accent-dark-brown: hsl(40, 51%, 20%);
+      --accent-light-gold: hsl(40, 50%, 65%);
+      --accent-cream: hsl(40, 50%, 75%);
+      --accent-gold: hsl(40, 50%, 60%);
+      --accent-bronze: hsl(39, 50%, 24%);
+      --spinner: hsla(40, 50%, 20%, 0.5);
+      --white: hsl(0, 0%, 100%);
+      --white-rgb: 255, 255, 255;
+      --black: hsl(0, 0%, 0%);
+      --black-rgb: 0, 0, 0;
+      --ink: hsl(0, 0%, 96%);
+      --muted: hsl(0, 0%, 70%);
+      --input-bg: hsl(0, 0%, 10%);
+      --card: hsl(0, 0%, 12%);
+      --border: hsl(0, 0%, 20%);
+      --border-soft: hsl(0, 0%, 15%);
+      --border-softer: hsl(0, 0%, 24%);
+      --ghost-hover: hsl(0, 0%, 18%);
+      --shadow-strong: 0 0.5rem 1.5rem hsla(0, 0%, 0%, 0.4);
+      --shadow-soft: 0 0.25rem 1rem hsla(0, 0%, 0%, 0.4);
+      --radius: 1.125rem;
+      --ctrl-h: 2.75rem;
+      --ctrl-r: 0.75rem;
+      --row-hover: hsla(0, 0%, 100%, 0.05);
+      --cell-x: 0.75rem;
+    }
 
 html,
 body {
@@ -58,7 +60,8 @@ body {
   background-color: var(--bg);
   background-size: cover;
   color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
   position: relative;
 }
 
@@ -425,16 +428,17 @@ button:active {
   font-weight: 800;
   box-shadow: inset 0 0 0 0.0625rem hsla(0, 0%, 0%, 0.15);
 }
-        .drp .drp-live {
-        position: absolute;
-        width: 0.0625rem;
-        height: 0.0625rem;
-        margin: -0.0625rem;
-        border: 0;
-        padding: 0;
-        clip: rect(0 0 0 0);
-        overflow: hidden;
-      }
+
+.drp .drp-live {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  margin: -0.0625rem;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
 
 .section {
   margin-top: 1.75rem;
@@ -778,15 +782,6 @@ tbody tr.visible {
   .group-actions .btn-ghost + .btn-ghost {
     border-left: 0;
   }
-
-  .kpis {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  #signupsTable tbody td {
-    font-size: 0.875rem;
-  }
 }
 
 @media (max-width: 37.5rem) {
@@ -794,7 +789,98 @@ tbody tr.visible {
     grid-template-columns: 1fr;
   }
 }
-</style>
+
+.brandbar.brandbar--with-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.brandbar.brandbar--with-toolbar .toolbar {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  margin-left: auto;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  width: auto;
+}
+
+.brandbar.brandbar--with-toolbar .toolbar .group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: auto;
+}
+
+.brandbar.brandbar--with-toolbar .toolbar .group button {
+  height: auto;
+  width: auto;
+  border-radius: var(--ctrl-r);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  padding: 0.25rem;
+}
+
+.brandbar.brandbar--with-toolbar .toolbar .group-actions button {
+  height: var(--ctrl-h);
+  width: var(--ctrl-h);
+}
+
+@media (max-width: 45rem) {
+  .brandbar.brandbar--with-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .brandbar.brandbar--with-toolbar .toolbar {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-left: 0;
+  }
+
+  .brandbar.brandbar--with-toolbar .toolbar .group {
+    width: 100%;
+  }
+
+  .brandbar.brandbar--with-toolbar .group-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .brandbar.brandbar--with-toolbar .group-actions button {
+    width: 100% !important;
+    height: var(--ctrl-h);
+    border-radius: 0;
+  }
+
+  .brandbar.brandbar--with-toolbar .group-actions button:first-child {
+    border-top-left-radius: var(--ctrl-r);
+    border-bottom-left-radius: var(--ctrl-r);
+  }
+
+  .brandbar.brandbar--with-toolbar .group-actions button:last-child {
+    border-top-right-radius: var(--ctrl-r);
+    border-bottom-right-radius: var(--ctrl-r);
+  }
+
+  .brandbar.brandbar--with-toolbar .group-actions .btn-ghost + .btn-ghost {
+    border-left: 0;
+  }
+}
+
+  </style>
 </head>
 
 <body>
