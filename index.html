@@ -2,885 +2,914 @@
 <html lang="en">
 
 <head>
-  <base target="_top" />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MITA 2 Ticket Sales</title>
-  <link
-    rel="icon"
-    href="https://storage.googleapis.com/msgsndr/tfaMfEcKzbKeor4FyoMS/media/67d635061b97ac1cbd002603.png"
-    type="image/png"
-  />
-  <style>
-    :root {
-      --bg: hsl(0, 0%, 5%);
-      --brand: hsl(40, 50%, 60%);
-      --brand-dark: hsl(40, 51%, 20%);
-      --brand-soft: hsl(40, 50%, 75%);
-      --accent-dark-brown: hsl(40, 51%, 20%);
-      --accent-light-gold: hsl(40, 50%, 65%);
-      --accent-cream: hsl(40, 50%, 75%);
-      --accent-gold: hsl(40, 50%, 60%);
-      --accent-bronze: hsl(39, 50%, 24%);
-      --spinner: hsla(40, 50%, 20%, 0.5);
-      --white: hsl(0, 0%, 100%);
-      --white-rgb: 255, 255, 255;
-      --black: hsl(0, 0%, 0%);
-      --black-rgb: 0, 0, 0;
-      --ink: hsl(0, 0%, 96%);
-      --muted: hsl(0, 0%, 70%);
-      --input-bg: hsl(0, 0%, 10%);
-      --card: hsl(0, 0%, 12%);
-      --border: hsl(0, 0%, 20%);
-      --border-soft: hsl(0, 0%, 15%);
-      --border-softer: hsl(0, 0%, 24%);
-      --ghost-hover: hsl(0, 0%, 18%);
-      --shadow-strong: 0 0.5rem 1.5rem hsla(0, 0%, 0%, 0.4);
-      --shadow-soft: 0 0.25rem 1rem hsla(0, 0%, 0%, 0.4);
-      --radius: 1.125rem;
-      --ctrl-h: 2.75rem;
-      --ctrl-r: 0.75rem;
-      --row-hover: hsla(0, 0%, 100%, 0.05);
-      --cell-x: 0.75rem;
-    }
-
-html,
-body {
-  height: auto;
-  overflow-x: hidden;
-  margin: 0;
-}
-
-body {
-  padding: 0 20%;
-  background-image: url("https://storage.googleapis.com/msgsndr/OLDsMUaIywbz0mgllz8s/media/68b367c8f772203732a23dfe.jpeg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-  background-color: var(--bg);
-  background-size: cover;
-  color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  position: relative;
-}
-
-.wrap {
-  margin: 1.5rem auto 4rem;
-  position: relative;
-  z-index: 1;
-}
-
-.brandbar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  overflow: visible;
-}
-
-.logo {
-  height: 2.5rem;
-  width: auto;
-  display: block;
-}
-
-.toolbar {
-  display: flex;
-  gap: 0.625rem;
-  align-items: center;
-  margin-left: auto;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  width: auto;
-}
-
-.toolbar .group {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-button {
-  border: none;
-  cursor: pointer;
-  border-radius: 999rem;
-  padding: 0.25rem;
-  font-weight: 700;
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.05s ease, background 0.15s ease, color 0.15s ease;
-  color: var(--ink);
-  background: transparent;
-}
-
-button:active {
-  transform: translateY(0.0625rem) scale(0.98);
-}
-
-.btn-primary {
-  background: linear-gradient(
-    45deg,
-    var(--accent-dark-brown),
-    var(--accent-light-gold),
-    var(--accent-cream),
-    var(--accent-gold),
-    var(--accent-bronze)
-  );
-  color: var(--black);
-}
-
-.btn-primary:hover {
-  filter: brightness(1.05);
-}
-
-.btn-ghost {
-  background: transparent;
-  border: 0.0625rem solid var(--border);
-  color: var(--ink);
-}
-
-.btn-ghost:hover {
-  background: var(--ghost-hover);
-}
-
-.toolbar .group button {
-  height: var(--ctrl-h);
-  width: var(--ctrl-h);
-  border-radius: var(--ctrl-r);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-}
-
-.toolbar .group button svg,
-.drp .drp-trigger svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.spinner {
-  display: none;
-}
-
-.spinner.show {
-  display: inline-block;
-  margin-left: 0;
-  border: 0.125rem solid var(--spinner);
-  border-top-color: var(--brand-soft);
-  border-radius: 50%;
-  height: 1.25rem;
-  width: 1.25rem;
-  animation: spin 1s linear infinite;
-  vertical-align: middle;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-#applyBtn:has(.spinner.show) svg {
-  visibility: hidden;
-  display: none;
-}
-
-.drp {
-  --drp-bg: var(--input-bg);
-  --drp-border: var(--border);
-  --drp-ink: var(--ink);
-  --drp-muted: var(--muted);
-  --drp-ring: color-mix(in oklab, var(--accent-gold) 40%, transparent);
-  --drp-selected-bg: var(--accent-gold);
-  --drp-selected-fg: var(--black);
-  --drp-inrange-bg: color-mix(in oklab, var(--accent-gold) 22%, transparent);
-  --drp-today-ring: var(--accent-gold);
-  --drp-cell: 2.375rem;
-  --drp-shadow: var(--shadow-soft);
-}
-
-.drp .drp-field {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  background: var(--drp-bg);
-  color: var(--drp-ink);
-  border: 0.0625rem solid var(--drp-border);
-  border-radius: var(--ctrl-r);
-  padding: 1rem;
-  height: calc(var(--ctrl-h) - 2rem);
-  box-shadow: var(--drp-shadow);
-  min-width: auto;
-}
-
-.drp .drp-label {
-  display: none !important;
-}
-
-.drp .drp-display {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1 1 auto;
-  min-width: 0;
-  justify-content: space-between;
-}
-
-.drp .drp-text {
-  display: inline-block;
-  background: transparent;
-  border: 0;
-  color: var(--drp-ink);
-  font: inherit;
-  padding: 0;
-  outline: none;
-  pointer-events: none;
-  min-width: 6rem;
-  font-size: inherit;
-}
-
-.drp .drp-sep {
-  opacity: 0.65;
-}
-
-.drp .drp-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: var(--drp-ink);
-  border-radius: 999rem;
-  width: auto;
-  height: auto;
-  padding: 0;
-  cursor: pointer;
-  transition: background 120ms ease, transform 60ms ease;
-  box-shadow: none;
-}
-
-.drp .drp-trigger:hover {
-  background: var(--ghost-hover);
-}
-
-.drp .drp-popover {
-  position: absolute;
-  z-index: 9999;
-  top: calc(100% + 0.5rem);
-  left: 0;
-  background: hsla(0, 0%, 12%, 0.95);
-  backdrop-filter: blur(0.5rem);
-  -webkit-backdrop-filter: blur(0.5rem);
-  border: 0.0625rem solid var(--border-soft);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-strong);
-  color: var(--drp-ink);
-  width: max-content;
-  opacity: 0;
-  transform: scale(0.98);
-  pointer-events: none;
-  transition: opacity 120ms ease, transform 120ms ease;
-}
-
-.drp .drp-popover.open {
-  opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
-}
-
-.drp .drp-popover.is-top {
-  top: auto;
-  bottom: calc(100% + 0.5rem);
-}
-
-.drp .drp-surface {
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  padding: 0.75rem;
-  gap: 1rem;
-  min-width: 18.75rem;
-}
-
-.drp .drp-head {
-  display: grid;
-  grid-template-columns: 2.125rem 1fr 2.125rem;
-  align-items: center;
-  gap: 0.375rem;
-  margin-bottom: 0;
-}
-
-.drp .drp-nav {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.125rem;
-  height: 2.125rem;
-  border-radius: 0.5rem;
-  border: 0.0625rem solid var(--border);
-  background: transparent;
-  color: var(--drp-ink);
-  cursor: pointer;
-}
-
-.drp .drp-nav:hover {
-  background: var(--ghost-hover);
-}
-
-.drp .drp-caption {
-  text-align: center;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.drp .drp-week {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  justify-content: center;
-  gap: 0.25rem;
-  margin: 0;
-}
-
-.drp .drp-wd {
-  height: 1.5rem;
-  line-height: 1.5rem;
-  text-align: center;
-  font-size: 0.6875rem;
-  color: var(--drp-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.drp .drp-grid {
-  gap: 0.25rem;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, var(--drp-cell));
-  justify-content: center;
-  padding: 0;
-}
-
-.drp .drp-day {
-  position: relative;
-  width: var(--drp-cell);
-  height: var(--drp-cell);
-  border-radius: 0.75rem;
-  border: 0.0625rem solid transparent;
-  background: transparent;
-  color: var(--drp-ink);
-  font: inherit;
-  cursor: pointer;
-  outline: none;
-  display: grid;
-  place-items: center;
-  user-select: none;
-  transition: background 100ms ease, color 100ms ease, border-color 100ms ease;
-}
-
-.drp .drp-day:hover {
-  background: var(--ghost-hover);
-}
-
-.drp .drp-day:focus-visible {
-  border-color: var(--drp-ring);
-}
-
-.drp .drp-day.is-outside {
-  opacity: 0.5;
-}
-
-.drp .drp-day.is-today {
-  outline: 0.0625rem solid var(--drp-today-ring);
-  outline-offset: 0.0625rem;
-  border-radius: 0.75rem;
-}
-
-.drp .drp-day.is-inrange {
-  background: color-mix(in oklab, var(--drp-selected-bg) 22%, transparent);
-}
-
-.drp .drp-day.is-start,
-.drp .drp-day.is-end {
-  background: var(--drp-selected-bg);
-  color: var(--drp-selected-fg);
-  font-weight: 800;
-}
-
-.drp .drp-day.is-start::before,
-.drp .drp-day.is-end::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 0.75rem;
-  box-shadow: inset 0 0 0 0.0625rem hsla(0, 0%, 0%, 0.15);
-}
-
-.drp .drp-day.is-preview {
-  background: color-mix(in oklab, var(--drp-selected-bg) 28%, transparent);
-}
-
-.drp .drp-day.is-preview-edge {
-  background: color-mix(in oklab, var(--drp-selected-bg) 92%, transparent);
-  color: var(--drp-selected-fg);
-  font-weight: 800;
-  box-shadow: inset 0 0 0 0.0625rem hsla(0, 0%, 0%, 0.15);
-}
-
-.drp .drp-live {
-  position: absolute;
-  width: 0.0625rem;
-  height: 0.0625rem;
-  margin: -0.0625rem;
-  border: 0;
-  padding: 0;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-}
-
-.section {
-  margin-top: 1.75rem;
-  padding-top: 0.5rem;
-}
-
-.section-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--ink);
-  background: transparent;
-  padding: 0;
-  border-radius: 0;
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 0.375rem 0 0.75rem;
-  box-shadow: none;
-}
-
-.kpis {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.kpi {
-  background: linear-gradient(
-    45deg,
-    hsla(0, 0%, 12%, 0.5),
-    hsla(0, 0%, 12%, 0.2),
-    hsla(0, 0%, 0%, 0.5)
-  );
-  backdrop-filter: blur(0.125rem);
-  -webkit-backdrop-filter: blur(0.125rem);
-  color: var(--ink);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-soft);
-  border: 0.0625rem solid var(--border-soft);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-height: 6.875rem;
-}
-
-.kpi .label {
-  font-size: 1rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 800;
-}
-
-.kpi .value {
-  font-size: 2.5rem;
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  line-height: 1;
-}
-
-.card {
-  background: linear-gradient(45deg, hsla(0, 0%, 12%, 0.5), hsla(0, 0%, 12%, 0.2), hsla(0, 0%, 12%, 0.5));
-  backdrop-filter: blur(0.125rem);
-  -webkit-backdrop-filter: blur(0.125rem);
-  color: var(--ink);
-  border-radius: var(--radius);
-  padding: 1rem;
-  box-shadow: var(--shadow-soft);
-  border: 0.0625rem solid var(--border-soft);
-  min-width: 0;
-}
-
-.table-wrap {
-  overflow: auto;
-  border-radius: 0.625rem;
-}
-
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 0.25rem;
-  table-layout: auto;
-  min-width: 56.25rem;
-}
-
-thead th {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  padding: 0.75rem var(--cell-x);
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-  text-align: left;
-  border-bottom: 0.0625rem solid var(--border-soft);
-  background: var(--card);
-  white-space: nowrap;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.15s ease;
-  margin-left: 0.5rem;
-}
-
-thead th:hover {
-  background: var(--ghost-hover);
-}
-
-thead th::after {
-  content: "";
-  font-size: 0.625rem;
-  opacity: 0.7;
-  margin-left: 0.5rem;
-}
-
-thead th.sorted-asc::after {
-  content: " ▲";
-  font-size: 0.625rem;
-  opacity: 0.7;
-  margin-left: 0.5rem;
-}
-
-thead th.sorted-desc::after {
-  content: " ▼";
-  font-size: 0.625rem;
-  opacity: 0.7;
-  margin-left: 0.5rem;
-}
-
-#signupsTable tbody td {
-  padding: 1rem var(--cell-x);
-  border-bottom: 0.0625rem solid var(--border-soft);
-  font-size: 1rem;
-  color: var(--ink);
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-  height: 3.75rem;
-  box-sizing: border-box;
-  vertical-align: middle;
-}
-
-tbody tr:last-child td {
-  border-bottom: none;
-}
-
-tbody tr:hover {
-  background: var(--row-hover);
-}
-
-#signupsTable th:first-child,
-#signupsTable td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 4;
-  background: var(--card);
-  box-shadow: 0.125rem 0 0 0 var(--border-soft);
-}
-
-.toast {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  background: hsla(0, 0%, 12%, 0.95);
-  color: var(--ink);
-  border: 0.0625rem solid var(--border-soft);
-  padding: 0.625rem 0.875rem;
-  border-radius: 0.75rem;
-  box-shadow: var(--shadow-soft);
-  display: none;
-  z-index: 99999;
-}
-
-.toast.show {
-  display: block;
-}
-
-.table-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.9375rem;
-  background: linear-gradient(45deg, hsla(0, 0%, 12%, 0.5), hsla(0, 0%, 12%, 0.2), hsla(0, 0%, 12%, 0.5));
-  backdrop-filter: blur(0.125rem);
-  -webkit-backdrop-filter: blur(0.125rem);
-  color: var(--ink);
-  padding: 0.9375rem;
-  border: 0.0625rem solid var(--border-soft);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-soft);
-}
-
-.records-info {
-  color: var(--muted);
-  font-size: 0.875rem;
-}
-
-.pagination {
-  display: flex;
-  gap: 0.375rem;
-  align-items: center;
-}
-
-#page-numbers {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.page-size-selector {
-  margin-right: 0.75rem;
-}
-
-.page-size-selector select {
-  padding: 0.375rem 0.625rem;
-  border: 0.0625rem solid var(--border);
-  border-radius: 0.375rem;
-  cursor: pointer;
-  background: var(--input-bg);
-  color: var(--ink);
-}
-
-.pagination button {
-  padding: 0.375rem 0.75rem;
-  border: 0.0625rem solid var(--border);
-  background: transparent;
-  color: var(--ink);
-  cursor: pointer;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  box-shadow: var(--shadow-soft);
-  transition: background 0.15s ease, transform 0.05s ease;
-}
-
-.pagination button:hover:not(:disabled) {
-  background: var(--ghost-hover);
-}
-
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pagination button.active {
-  background: linear-gradient(
-    45deg,
-    var(--accent-dark-brown),
-    var(--accent-light-gold),
-    var(--accent-cream),
-    var(--accent-gold),
-    var(--accent-bronze)
-  );
-  color: var(--black);
-  border: none;
-  font-weight: 700;
-}
-
-tbody tr {
-  display: none;
-}
-
-tbody tr.visible {
-  display: table-row;
-}
-
-@media (max-width: 80rem) {
-  body {
-    padding: 0 8%;
-  }
-}
-
-@media (max-width: 64rem) {
-  .kpis {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 45rem) {
-  body {
-    padding: 0 0.75rem;
-  }
-
-  .brandbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .logo {
-    margin: 0 auto;
-  }
-
-  .toolbar {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    margin-left: 0;
-  }
-
-  .toolbar .group {
-    width: 100%;
-  }
-
-  .group-range,
-  #date-range {
-    width: 100%;
-    display: block;
-  }
-
-  .drp .drp-field {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  .group-actions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-  }
-
-  .group-actions button {
-    width: 100% !important;
-    height: var(--ctrl-h);
-    border-radius: 0;
-  }
-
-  .group-actions button:first-child {
-    border-top-left-radius: var(--ctrl-r);
-    border-bottom-left-radius: var(--ctrl-r);
-  }
-
-  .group-actions button:last-child {
-    border-top-right-radius: var(--ctrl-r);
-    border-bottom-right-radius: var(--ctrl-r);
-  }
-
-  .group-actions .btn-ghost + .btn-ghost {
-    border-left: 0;
-  }
-}
-
-@media (max-width: 37.5rem) {
-  .kpis {
-    grid-template-columns: 1fr;
-  }
-}
-
-.brandbar.brandbar--with-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  overflow: visible;
-}
-
-.brandbar.brandbar--with-toolbar .toolbar {
-  display: flex;
-  gap: 0.625rem;
-  align-items: center;
-  margin-left: auto;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  width: auto;
-}
-
-.brandbar.brandbar--with-toolbar .toolbar .group {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  width: auto;
-}
-
-.brandbar.brandbar--with-toolbar .toolbar .group button {
-  height: auto;
-  width: auto;
-  border-radius: var(--ctrl-r);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-  padding: 0.25rem;
-}
-
-.brandbar.brandbar--with-toolbar .toolbar .group-actions button {
-  height: var(--ctrl-h);
-  width: var(--ctrl-h);
-}
-
-@media (max-width: 45rem) {
-  .brandbar.brandbar--with-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .brandbar.brandbar--with-toolbar .toolbar {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    margin-left: 0;
-  }
-
-  .brandbar.brandbar--with-toolbar .toolbar .group {
-    width: 100%;
-  }
-
-  .brandbar.brandbar--with-toolbar .group-actions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-  }
-
-  .brandbar.brandbar--with-toolbar .group-actions button {
-    width: 100% !important;
-    height: var(--ctrl-h);
-    border-radius: 0;
-  }
-
-  .brandbar.brandbar--with-toolbar .group-actions button:first-child {
-    border-top-left-radius: var(--ctrl-r);
-    border-bottom-left-radius: var(--ctrl-r);
-  }
-
-  .brandbar.brandbar--with-toolbar .group-actions button:last-child {
-    border-top-right-radius: var(--ctrl-r);
-    border-bottom-right-radius: var(--ctrl-r);
-  }
-
-  .brandbar.brandbar--with-toolbar .group-actions .btn-ghost + .btn-ghost {
-    border-left: 0;
-  }
-}
-
-  </style>
+    <base target="_top" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MITA 2 Ticket Sales</title>
+    <link rel="icon"
+        href="https://storage.googleapis.com/msgsndr/tfaMfEcKzbKeor4FyoMS/media/67d635061b97ac1cbd002603.png"
+        type="image/png" />
+    <style>
+        :root {
+            --bg: hsl(0, 0%, 5%);
+            --brand: hsl(40, 50%, 60%);
+            --brand-dark: hsl(40, 51%, 20%);
+            --brand-soft: hsl(40, 50%, 75%);
+            --accent-dark-brown: hsl(40, 51%, 20%);
+            --accent-light-gold: hsl(40, 50%, 65%);
+            --accent-cream: hsl(40, 50%, 75%);
+            --accent-gold: hsl(40, 50%, 60%);
+            --accent-bronze: hsl(39, 50%, 24%);
+            --spinner: hsla(40, 50%, 20%, 0.5);
+            --white: hsl(0, 0%, 100%);
+            --white-rgb: 255, 255, 255;
+            --black: hsl(0, 0%, 0%);
+            --black-rgb: 0, 0, 0;
+            --ink: hsl(0, 0%, 96%);
+            --muted: hsl(0, 0%, 70%);
+            --input-bg: hsl(0, 0%, 10%);
+            --card: hsl(0, 0%, 12%);
+            --border: hsl(0, 0%, 20%);
+            --border-soft: hsl(0, 0%, 15%);
+            --border-softer: hsl(0, 0%, 24%);
+            --ghost-hover: hsl(0, 0%, 18%);
+            --shadow-strong: 0 0.5rem 1.5rem hsla(0, 0%, 0%, 0.4);
+            --shadow-soft: 0 0.25rem 1rem hsla(0, 0%, 0%, 0.4);
+            --radius: 1.125rem;
+            --ctrl-h: 2.75rem;
+            --ctrl-r: 0.75rem;
+            --row-hover: hsla(0, 0%, 100%, 0.05);
+            --cell-x: 0.75rem;
+            --delta-up: hsl(120 60% 70%);
+            --delta-down: hsl(8 70% 70%);
+            --delta-flat: var(--muted);
+        }
+
+        html,
+        body {
+            height: auto;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        body {
+            padding: 0 20%;
+            background-image: url("https://storage.googleapis.com/msgsndr/OLDsMUaIywbz0mgllz8s/media/68b367c8f772203732a23dfe.jpeg");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: var(--bg);
+            background-size: cover;
+            color: var(--ink);
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial;
+            position: relative;
+        }
+
+        .wrap {
+            margin: 1.5rem auto 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brandbar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            overflow: visible;
+        }
+
+        .logo {
+            height: 2.5rem;
+            width: auto;
+            display: block;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 0.625rem;
+            align-items: center;
+            margin-left: auto;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            width: auto;
+        }
+
+        .toolbar .group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 999rem;
+            padding: 0.25rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.05s ease, background 0.15s ease, color 0.15s ease;
+            color: var(--ink);
+            background: transparent;
+        }
+
+        button:active {
+            transform: translateY(0.0625rem) scale(0.98);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg,
+                    var(--accent-dark-brown),
+                    var(--accent-light-gold),
+                    var(--accent-cream),
+                    var(--accent-gold),
+                    var(--accent-bronze));
+            color: var(--black);
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.05);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 0.0625rem solid var(--border);
+            color: var(--ink);
+        }
+
+        .btn-ghost:hover {
+            background: var(--ghost-hover);
+        }
+
+        .toolbar .group button {
+            height: var(--ctrl-h);
+            width: var(--ctrl-h);
+            border-radius: var(--ctrl-r);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+        }
+
+        .toolbar .group button svg,
+        .drp .drp-trigger svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .spinner {
+            display: none;
+        }
+
+        .spinner.show {
+            display: inline-block;
+            margin-left: 0;
+            border: 0.125rem solid var(--spinner);
+            border-top-color: var(--brand-soft);
+            border-radius: 50%;
+            height: 1.25rem;
+            width: 1.25rem;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #applyBtn:has(.spinner.show) svg {
+            visibility: hidden;
+            display: none;
+        }
+
+        .drp {
+            --drp-bg: var(--input-bg);
+            --drp-border: var(--border);
+            --drp-ink: var(--ink);
+            --drp-muted: var(--muted);
+            --drp-ring: color-mix(in oklab, var(--accent-gold) 40%, transparent);
+            --drp-selected-bg: var(--accent-gold);
+            --drp-selected-fg: var(--black);
+            --drp-inrange-bg: color-mix(in oklab, var(--accent-gold) 22%, transparent);
+            --drp-today-ring: var(--accent-gold);
+            --drp-cell: 2.375rem;
+            --drp-shadow: var(--shadow-soft);
+        }
+
+        .drp .drp-field {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--drp-bg);
+            color: var(--drp-ink);
+            border: 0.0625rem solid var(--drp-border);
+            border-radius: var(--ctrl-r);
+            padding: 1rem;
+            height: calc(var(--ctrl-h) - 2rem);
+            box-shadow: var(--drp-shadow);
+            min-width: auto;
+        }
+
+        .drp .drp-label {
+            display: none !important;
+        }
+
+        .drp .drp-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1 1 auto;
+            min-width: 0;
+            justify-content: space-between;
+        }
+
+        .drp .drp-text {
+            display: inline-block;
+            background: transparent;
+            border: 0;
+            color: var(--drp-ink);
+            font: inherit;
+            padding: 0;
+            outline: none;
+            pointer-events: none;
+            min-width: 6rem;
+            font-size: inherit;
+        }
+
+        .drp .drp-sep {
+            opacity: 0.65;
+        }
+
+        .drp .drp-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--drp-ink);
+            border-radius: 999rem;
+            width: auto;
+            height: auto;
+            padding: 0;
+            cursor: pointer;
+            transition: background 120ms ease, transform 60ms ease;
+            box-shadow: none;
+        }
+
+        .drp .drp-trigger:hover {
+            background: var(--ghost-hover);
+        }
+
+        .drp .drp-popover {
+            position: absolute;
+            z-index: 9999;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            background: hsla(0, 0%, 12%, 0.95);
+            backdrop-filter: blur(0.5rem);
+            -webkit-backdrop-filter: blur(0.5rem);
+            border: 0.0625rem solid var(--border-soft);
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow-strong);
+            color: var(--drp-ink);
+            width: max-content;
+            opacity: 0;
+            transform: scale(0.98);
+            pointer-events: none;
+            transition: opacity 120ms ease, transform 120ms ease;
+        }
+
+        .drp .drp-popover.open {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .drp .drp-popover.is-top {
+            top: auto;
+            bottom: calc(100% + 0.5rem);
+        }
+
+        .drp .drp-surface {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            padding: 0.75rem;
+            gap: 1rem;
+            min-width: 18.75rem;
+        }
+
+        .drp .drp-head {
+            display: grid;
+            grid-template-columns: 2.125rem 1fr 2.125rem;
+            align-items: center;
+            gap: 0.375rem;
+            margin-bottom: 0;
+        }
+
+        .drp .drp-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.125rem;
+            height: 2.125rem;
+            border-radius: 0.5rem;
+            border: 0.0625rem solid var(--border);
+            background: transparent;
+            color: var(--drp-ink);
+            cursor: pointer;
+        }
+
+        .drp .drp-nav:hover {
+            background: var(--ghost-hover);
+        }
+
+        .drp .drp-caption {
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .drp .drp-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            justify-content: center;
+            gap: 0.25rem;
+            margin: 0;
+        }
+
+        .drp .drp-wd {
+            height: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            font-size: 0.6875rem;
+            color: var(--drp-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .drp .drp-grid {
+            gap: 0.25rem;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(6, var(--drp-cell));
+            justify-content: center;
+            padding: 0;
+        }
+
+        .drp .drp-day {
+            position: relative;
+            width: var(--drp-cell);
+            height: var(--drp-cell);
+            border-radius: 0.75rem;
+            border: 0.0625rem solid transparent;
+            background: transparent;
+            color: var(--drp-ink);
+            font: inherit;
+            cursor: pointer;
+            outline: none;
+            display: grid;
+            place-items: center;
+            user-select: none;
+            transition: background 100ms ease, color 100ms ease, border-color 100ms ease;
+        }
+
+        .drp .drp-day:hover {
+            background: var(--ghost-hover);
+        }
+
+        .drp .drp-day:focus-visible {
+            border-color: var(--drp-ring);
+        }
+
+        .drp .drp-day.is-outside {
+            opacity: 0.5;
+        }
+
+        .drp .drp-day.is-today {
+            outline: 0.0625rem solid var(--drp-today-ring);
+            outline-offset: 0.0625rem;
+            border-radius: 0.75rem;
+        }
+
+        .drp .drp-day.is-inrange {
+            background: color-mix(in oklab, var(--drp-selected-bg) 22%, transparent);
+        }
+
+        .drp .drp-day.is-start,
+        .drp .drp-day.is-end {
+            background: var(--drp-selected-bg);
+            color: var(--drp-selected-fg);
+            font-weight: 800;
+        }
+
+        .drp .drp-day.is-start::before,
+        .drp .drp-day.is-end::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 0.75rem;
+            box-shadow: inset 0 0 0 0.0625rem hsla(0, 0%, 0%, 0.15);
+        }
+
+        .drp .drp-day.is-preview {
+            background: color-mix(in oklab, var(--drp-selected-bg) 28%, transparent);
+        }
+
+        .drp .drp-day.is-preview-edge {
+            background: color-mix(in oklab, var(--drp-selected-bg) 92%, transparent);
+            color: var(--drp-selected-fg);
+            font-weight: 800;
+            box-shadow: inset 0 0 0 0.0625rem hsla(0, 0%, 0%, 0.15);
+        }
+
+        .drp .drp-live {
+            position: absolute;
+            width: 0.0625rem;
+            height: 0.0625rem;
+            margin: -0.0625rem;
+            border: 0;
+            padding: 0;
+            clip: rect(0 0 0 0);
+            overflow: hidden;
+        }
+
+        .section {
+            margin-top: 1.75rem;
+            padding-top: 0.5rem;
+        }
+
+        .section-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--ink);
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin: 0.375rem 0 0.75rem;
+            box-shadow: none;
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .kpi {
+            background: linear-gradient(45deg,
+                    hsla(0, 0%, 12%, 0.5),
+                    hsla(0, 0%, 12%, 0.2),
+                    hsla(0, 0%, 0%, 0.5));
+            backdrop-filter: blur(0.125rem);
+            -webkit-backdrop-filter: blur(0.125rem);
+            color: var(--ink);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-soft);
+            border: 0.0625rem solid var(--border-soft);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-height: 6.875rem;
+        }
+
+        .kpi .label {
+            font-size: 1rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 800;
+        }
+
+        .kpi .value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        /* NEW: trend pill + sub-label styles */
+        .kpi .sub-label {
+            min-height: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .kpi .delta {
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1;
+            margin-top: 0.125rem;
+        }
+
+        .kpi .delta.up {
+            color: var(--delta-up);
+        }
+
+        .kpi .delta.down {
+            color: var(--delta-down);
+        }
+
+        .kpi .delta.flat {
+            color: var(--delta-flat);
+        }
+
+        .card {
+            background: linear-gradient(45deg,
+                    hsla(0, 0%, 12%, 0.5),
+                    hsla(0, 0%, 12%, 0.2),
+                    hsla(0, 0%, 12%, 0.5));
+            backdrop-filter: blur(0.125rem);
+            -webkit-backdrop-filter: blur(0.125rem);
+            color: var(--ink);
+            border-radius: var(--radius);
+            padding: 1rem;
+            box-shadow: var(--shadow-soft);
+            border: 0.0625rem solid var(--border-soft);
+            min-width: 0;
+        }
+
+        .table-wrap {
+            overflow: auto;
+            border-radius: 0.625rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 0.25rem;
+            table-layout: auto;
+            min-width: 56.25rem;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            padding: 0.75rem var(--cell-x);
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+            text-align: left;
+            border-bottom: 0.0625rem solid var(--border-soft);
+            background: var(--card);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s ease;
+            margin-left: 0.5rem;
+        }
+
+        thead th:hover {
+            background: var(--ghost-hover);
+        }
+
+        thead th::after {
+            content: "";
+            font-size: 0.625rem;
+            opacity: 0.7;
+            margin-left: 0.5rem;
+        }
+
+        thead th.sorted-asc::after {
+            content: " ▲";
+            font-size: 0.625rem;
+            opacity: 0.7;
+            margin-left: 0.5rem;
+        }
+
+        thead th.sorted-desc::after {
+            content: " ▼";
+            font-size: 0.625rem;
+            opacity: 0.7;
+            margin-left: 0.5rem;
+        }
+
+        #signupsTable tbody td {
+            padding: 1rem var(--cell-x);
+            border-bottom: 0.0625rem solid var(--border-soft);
+            font-size: 1rem;
+            color: var(--ink);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+            height: 3.75rem;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--row-hover);
+        }
+
+        #signupsTable th:first-child,
+        #signupsTable td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 4;
+            background: var(--card);
+            box-shadow: 0.125rem 0 0 0 var(--border-soft);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: hsla(0, 0%, 12%, 0.95);
+            color: var(--ink);
+            border: 0.0625rem solid var(--border-soft);
+            padding: 0.625rem 0.875rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-soft);
+            display: none;
+            z-index: 99999;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.9375rem;
+            background: linear-gradient(45deg,
+                    hsla(0, 0%, 12%, 0.5),
+                    hsla(0, 0%, 12%, 0.2),
+                    hsla(0, 0%, 12%, 0.5));
+            backdrop-filter: blur(0.125rem);
+            -webkit-backdrop-filter: blur(0.125rem);
+            color: var(--ink);
+            padding: 0.9375rem;
+            border: 0.0625rem solid var(--border-soft);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .records-info {
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.375rem;
+            align-items: center;
+        }
+
+        #page-numbers {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .page-size-selector {
+            margin-right: 0.75rem;
+        }
+
+        .page-size-selector select {
+            padding: 0.375rem 0.625rem;
+            border: 0.0625rem solid var(--border);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            background: var(--input-bg);
+            color: var(--ink);
+        }
+
+        .pagination button {
+            padding: 0.375rem 0.75rem;
+            border: 0.0625rem solid var(--border);
+            background: transparent;
+            color: var(--ink);
+            cursor: pointer;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-soft);
+            transition: background 0.15s ease, transform 0.05s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--ghost-hover);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination button.active {
+            background: linear-gradient(45deg,
+                    var(--accent-dark-brown),
+                    var(--accent-light-gold),
+                    var(--accent-cream),
+                    var(--accent-gold),
+                    var(--accent-bronze));
+            color: var(--black);
+            border: none;
+            font-weight: 700;
+        }
+
+        tbody tr {
+            display: none;
+        }
+
+        tbody tr.visible {
+            display: table-row;
+        }
+
+        @media (max-width: 80rem) {
+            body {
+                padding: 0 8%;
+            }
+        }
+
+        @media (max-width: 64rem) {
+            .kpis {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 45rem) {
+            body {
+                padding: 0 0.75rem;
+            }
+
+            .brandbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .logo {
+                margin: 0 auto;
+            }
+
+            .toolbar {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                margin-left: 0;
+            }
+
+            .toolbar .group {
+                width: 100%;
+            }
+
+            .group-range,
+            #date-range {
+                width: 100%;
+                display: block;
+            }
+
+            .drp .drp-field {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .group-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0;
+            }
+
+            .group-actions button {
+                width: 100% !important;
+                height: var(--ctrl-h);
+                border-radius: 0;
+            }
+
+            .group-actions button:first-child {
+                border-top-left-radius: var(--ctrl-r);
+                border-bottom-left-radius: var(--ctrl-r);
+            }
+
+            .group-actions button:last-child {
+                border-top-right-radius: var(--ctrl-r);
+                border-bottom-right-radius: var(--ctrl-r);
+            }
+
+            .group-actions .btn-ghost+.btn-ghost {
+                border-left: 0;
+            }
+        }
+
+        @media (max-width: 37.5rem) {
+            .kpis {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .brandbar.brandbar--with-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            overflow: visible;
+        }
+
+        .brandbar.brandbar--with-toolbar .toolbar {
+            display: flex;
+            gap: 0.625rem;
+            align-items: center;
+            margin-left: auto;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            width: auto;
+        }
+
+        .brandbar.brandbar--with-toolbar .toolbar .group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            width: auto;
+        }
+
+        .brandbar.brandbar--with-toolbar .toolbar .group button {
+            height: auto;
+            width: auto;
+            border-radius: var(--ctrl-r);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+            padding: 0.25rem;
+        }
+
+        .brandbar.brandbar--with-toolbar .toolbar .group-actions button {
+            height: var(--ctrl-h);
+            width: var(--ctrl-h);
+        }
+
+        @media (max-width: 45rem) {
+            .brandbar.brandbar--with-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .brandbar.brandbar--with-toolbar .toolbar {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                margin-left: 0;
+            }
+
+            .brandbar.brandbar--with-toolbar .toolbar .group {
+                width: 100%;
+            }
+
+            .brandbar.brandbar--with-toolbar .group-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0;
+            }
+
+            .brandbar.brandbar--with-toolbar .group-actions button {
+                width: 100% !important;
+                height: var(--ctrl-h);
+                border-radius: 0;
+            }
+
+            .brandbar.brandbar--with-toolbar .group-actions button:first-child {
+                border-top-left-radius: var(--ctrl-r);
+                border-bottom-left-radius: var(--ctrl-r);
+            }
+
+            .brandbar.brandbar--with-toolbar .group-actions button:last-child {
+                border-top-right-radius: var(--ctrl-r);
+                border-bottom-right-radius: var(--ctrl-r);
+            }
+
+            .brandbar.brandbar--with-toolbar .group-actions .btn-ghost+.btn-ghost {
+                border-left: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -920,23 +949,30 @@ tbody tr.visible {
         </div>
 
         <h2 class="section-title">MITA 2 Ticket Sales</h2>
+
         <div id="kpis" class="kpis">
             <div class="kpi">
                 <div class="label">Gross Revenue</div>
                 <div id="kpiGrossRevenue" class="value">—</div>
+                <div id="kpiGrossRevenueDelta" class="delta">—</div>
+                <div class="sub-label">vs last period</div>
             </div>
             <div class="kpi">
                 <div class="label">Avg. Ticket Price</div>
                 <div id="kpiAvgTicketPrice" class="value">—</div>
+                <div id="kpiAvgTicketPriceDelta" class="delta">—</div>
+                <div class="sub-label">vs last period</div>
             </div>
             <div class="kpi">
                 <div class="label">Tickets Sold</div>
                 <div id="kpiTicketsSold" class="value">—</div>
+                <div id="kpiTicketsSoldDelta" class="delta">—</div>
+                <div class="sub-label">vs last period</div>
             </div>
         </div>
 
-        <h2 class="section-title" style="margin-top:18px;">Sign-Ups</h2>
-        <div class="card wide" style="margin-top:8px;">
+        <h2 class="section-title" style="margin-top: 18px;">Sign-Ups</h2>
+        <div class="card wide" style="margin-top: 8px;">
             <div class="table-wrap">
                 <table class="table" id="signupsTable">
                     <thead>
@@ -954,9 +990,11 @@ tbody tr.visible {
                 </table>
             </div>
         </div>
+
         <div class="table-controls">
             <div class="records-info">
-                Showing <span id="start-record">1</span> to <span id="end-record">20</span> of <span id="total-records">0</span> Records
+                Showing <span id="start-record">1</span> to <span id="end-record">20</span> of <span
+                    id="total-records">0</span> Records
             </div>
             <div class="pagination">
                 <div class="page-size-selector">
@@ -972,62 +1010,115 @@ tbody tr.visible {
                 <button id="next-btn" onclick="nextPage()">Next</button>
             </div>
         </div>
+
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <!-- Use Vercel proxy instead of direct Apps Script URL -->
     <script>
-        const GAS_URL = '/api/signups';
+        const GAS_URL = "/api/signups";
     </script>
 
     <script>
         (function () {
-            const clamp = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-            const startOfMonth = d => new Date(d.getFullYear(), d.getMonth(), 1);
+            const clamp = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            const startOfMonth = (d) => new Date(d.getFullYear(), d.getMonth(), 1);
             const addMonths = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, 1);
             const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
-            const isSameDay = (a, b) => !!(a && b) && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+            const isSameDay = (a, b) =>
+                !!(a && b) &&
+                a.getFullYear() === b.getFullYear() &&
+                a.getMonth() === b.getMonth() &&
+                a.getDate() === b.getDate();
 
             class DateRangePicker {
                 constructor(root, opts = {}) {
                     if (!root) throw new Error("DateRangePicker root required");
                     this.root = root;
-                    this.opts = Object.assign({ mode: "range", value: undefined, locale: "en-US", firstDayOfWeek: 0, onChange: undefined, onOpenChange: undefined }, opts);
+                    this.opts = Object.assign(
+                        { mode: "range", value: undefined, locale: "en-US", firstDayOfWeek: 0, onChange: undefined, onOpenChange: undefined },
+                        opts
+                    );
                     this.formatter = new Intl.DateTimeFormat(this.opts.locale || "en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
                     this.monthFormatter = new Intl.DateTimeFormat(this.opts.locale || "en-US", { month: "long", year: "numeric" });
                     this.weekdayFormatter = new Intl.DateTimeFormat(this.opts.locale || "en-US", { weekday: "short" });
-                    this.state = { open: false, cursor: clamp(this._initialCursor()), start: undefined, end: undefined, preview: undefined, focusDay: undefined, single: this.opts.mode === "single" };
+                    this.state = {
+                        open: false,
+                        cursor: clamp(this._initialCursor()),
+                        start: undefined,
+                        end: undefined,
+                        preview: undefined,
+                        focusDay: undefined,
+                        single: this.opts.mode === "single"
+                    };
                     if (this.state.single) {
-                        if (this.opts.value instanceof Date) { const v = clamp(this.opts.value); this.state.start = v; this.state.end = v; this.state.cursor = startOfMonth(v) }
+                        if (this.opts.value instanceof Date) {
+                            const v = clamp(this.opts.value);
+                            this.state.start = v;
+                            this.state.end = v;
+                            this.state.cursor = startOfMonth(v);
+                        }
                     } else if (this.opts.value && (this.opts.value.start || this.opts.value.end)) {
                         if (this.opts.value.start) this.state.start = clamp(this.opts.value.start);
                         if (this.opts.value.end) this.state.end = clamp(this.opts.value.end);
                         if (this.state.start) this.state.cursor = startOfMonth(this.state.start);
                         else if (this.state.end) this.state.cursor = startOfMonth(this.state.end);
                     }
-                    this._render(); this._announceMonth(); this._updateFieldTexts(); this._emitChange();
+                    this._render();
+                    this._announceMonth();
+                    this._updateFieldTexts();
+                    this._emitChange();
                 }
                 _positionPopover() {
-                    const field = this.root.querySelector(".drp-field"); const pop = this.el?.pop;
-                    if (!field || !pop) return; pop.classList.remove("is-top");
-                    const rect = field.getBoundingClientRect(); const popH = pop.offsetHeight || 320;
-                    const spaceBelow = window.innerHeight - rect.bottom; const spaceAbove = rect.top;
+                    const field = this.root.querySelector(".drp-field");
+                    const pop = this.el?.pop;
+                    if (!field || !pop) return;
+                    pop.classList.remove("is-top");
+                    const rect = field.getBoundingClientRect();
+                    const popH = pop.offsetHeight || 320;
+                    const spaceBelow = window.innerHeight - rect.bottom;
+                    const spaceAbove = rect.top;
                     if (spaceBelow < popH + 16 && spaceAbove > popH + 16) pop.classList.add("is-top");
                 }
-                open() { if (!this.state.open) { this.state.open = true; this._syncOpen(); this._positionPopover(); } }
-                close() { if (this.state.open) { this.state.open = false; this._syncOpen(); } }
-                getValue() { return this.state.single ? this.state.start : { start: this.state.start, end: this.state.end } }
+                open() {
+                    if (!this.state.open) {
+                        this.state.open = true;
+                        this._syncOpen();
+                        this._positionPopover();
+                    }
+                }
+                close() {
+                    if (this.state.open) {
+                        this.state.open = false;
+                        this._syncOpen();
+                    }
+                }
+                getValue() {
+                    return this.state.single ? this.state.start : { start: this.state.start, end: this.state.end };
+                }
                 setValue(v) {
                     if (this.state.single) {
-                        const d = v instanceof Date ? clamp(v) : undefined; this.state.start = d; this.state.end = d; if (d) this.state.cursor = startOfMonth(d);
+                        const d = v instanceof Date ? clamp(v) : undefined;
+                        this.state.start = d;
+                        this.state.end = d;
+                        if (d) this.state.cursor = startOfMonth(d);
                     } else {
-                        const s = v && v.start ? clamp(v.start) : undefined; const e = v && v.end ? clamp(v.end) : undefined;
-                        this.state.start = s; this.state.end = e; if (s) this.state.cursor = startOfMonth(s); else if (e) this.state.cursor = startOfMonth(e);
+                        const s = v && v.start ? clamp(v.start) : undefined;
+                        const e = v && v.end ? clamp(v.end) : undefined;
+                        this.state.start = s;
+                        this.state.end = e;
+                        if (s) this.state.cursor = startOfMonth(s);
+                        else if (e) this.state.cursor = startOfMonth(e);
                     }
-                    this.state.preview = undefined; this._rerenderGrid(); this._updateFieldTexts(); this._emitChange();
+                    this.state.preview = undefined;
+                    this._rerenderGrid();
+                    this._updateFieldTexts();
+                    this._emitChange();
                 }
-                destroy() { this.root.innerHTML = ""; this._removeListeners && this._removeListeners(); }
+                destroy() {
+                    this.root.innerHTML = "";
+                    this._removeListeners && this._removeListeners();
+                }
                 _initialCursor() {
                     if (this.opts.value) {
                         if (this.opts.mode === "single" && this.opts.value instanceof Date) return startOfMonth(this.opts.value);
@@ -1037,40 +1128,41 @@ tbody tr.visible {
                     return startOfMonth(new Date());
                 }
                 _render() {
-                    this.root.setAttribute("role", "group"); this.root.classList.add("drp");
+                    this.root.setAttribute("role", "group");
+                    this.root.classList.add("drp");
                     this.root.innerHTML = `
-            <div class="drp-field" aria-label="Date range selector">
-              <div class="drp-display" tabindex="0" aria-haspopup="dialog" aria-expanded="false">
-                <span class="drp-text" id="drp-start-text">—</span>
-                <span class="drp-sep">-</span>
-                <span class="drp-text" id="drp-end-text">—</span>
-              </div>
-              <button class="drp-trigger" type="button" aria-label="Open calendar" title="Open calendar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-                  <path d="M16 2v4M8 2v4M3 10h18"></path>
-                </svg>
-              </button>
-              <div class="drp-popover" role="dialog" aria-modal="true" aria-label="Choose date range">
-                <span class="drp-sentinel" tabindex="0" data-sentinel="start"></span>
-                <div class="drp-surface">
-                  <div class="drp-head">
-                    <button class="drp-nav" type="button" data-nav="-1" aria-label="Previous month">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
-                    </button>
-                    <div class="drp-caption" id="drp-caption"></div>
-                    <button class="drp-nav" type="button" data-nav="1" aria-label="Next month">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
-                    </button>
-                  </div>
-                  <div class="drp-week" aria-hidden="true"></div>
-                  <div class="drp-grid" role="grid" aria-labelledby="drp-caption"></div>
-                  <div class="drp-error" id="drp-error" aria-live="polite"></div>
+              <div class="drp-field" aria-label="Date range selector">
+                <div class="drp-display" tabindex="0" aria-haspopup="dialog" aria-expanded="false">
+                  <span class="drp-text" id="drp-start-text">—</span>
+                  <span class="drp-sep">-</span>
+                  <span class="drp-text" id="drp-end-text">—</span>
                 </div>
-                <span class="drp-sentinel" tabindex="0" data-sentinel="end"></span>
-                <div class="drp-live" aria-live="polite" id="drp-live"></div>
-              </div>
-            </div>`;
+                <button class="drp-trigger" type="button" aria-label="Open calendar" title="Open calendar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                    <path d="M16 2v4M8 2v4M3 10h18"></path>
+                  </svg>
+                </button>
+                <div class="drp-popover" role="dialog" aria-modal="true" aria-label="Choose date range">
+                  <span class="drp-sentinel" tabindex="0" data-sentinel="start"></span>
+                  <div class="drp-surface">
+                    <div class="drp-head">
+                      <button class="drp-nav" type="button" data-nav="-1" aria-label="Previous month">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+                      </button>
+                      <div class="drp-caption" id="drp-caption"></div>
+                      <button class="drp-nav" type="button" data-nav="1" aria-label="Next month">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+                      </button>
+                    </div>
+                    <div class="drp-week" aria-hidden="true"></div>
+                    <div class="drp-grid" role="grid" aria-labelledby="drp-caption"></div>
+                    <div class="drp-error" id="drp-error" aria-live="polite"></div>
+                  </div>
+                  <span class="drp-sentinel" tabindex="0" data-sentinel="end"></span>
+                  <div class="drp-live" aria-live="polite" id="drp-live"></div>
+                </div>
+              </div>`;
                     this.el = {
                         display: this.root.querySelector(".drp-display"),
                         startText: this.root.querySelector("#drp-start-text"),
@@ -1084,21 +1176,38 @@ tbody tr.visible {
                         live: this.root.querySelector("#drp-live"),
                         sentinels: this.root.querySelectorAll(".drp-sentinel")
                     };
-                    this._renderWeekdays(); this._rerenderGrid(); this._bind();
+                    this._renderWeekdays();
+                    this._rerenderGrid();
+                    this._bind();
                 }
                 _bind() {
-                    const openWithKeyboard = (ev) => { const k = ev.key; if (k === "Enter" || k === " " || k === "ArrowDown") { ev.preventDefault(); this.open(); this._focusInitialDay(); } };
-                    const toggleOpen = () => { this.state.open ? this.close() : this.open(); if (this.state.open) { this._focusInitialDay(); this._positionPopover(); } };
+                    const openWithKeyboard = (ev) => {
+                        const k = ev.key;
+                        if (k === "Enter" || k === " " || k === "ArrowDown") {
+                            ev.preventDefault();
+                            this.open();
+                            this._focusInitialDay();
+                        }
+                    };
+                    const toggleOpen = () => {
+                        this.state.open ? this.close() : this.open();
+                        if (this.state.open) {
+                            this._focusInitialDay();
+                            this._positionPopover();
+                        }
+                    };
                     this.el.display.addEventListener("click", toggleOpen);
                     this.el.display.addEventListener("keydown", openWithKeyboard);
                     this.el.trigger.addEventListener("click", toggleOpen);
                     this.el.trigger.addEventListener("keydown", openWithKeyboard);
-                    this.el.pop.querySelectorAll("[data-nav]").forEach(btn => {
+                    this.el.pop.querySelectorAll("[data-nav]").forEach((btn) => {
                         btn.addEventListener("click", (ev) => {
-                            ev.preventDefault(); ev.stopPropagation();
+                            ev.preventDefault();
+                            ev.stopPropagation();
                             const delta = Number(btn.getAttribute("data-nav"));
                             this.state.cursor = addMonths(this.state.cursor, delta);
-                            this._rerenderGrid(); this._announceMonth();
+                            this._rerenderGrid();
+                            this._announceMonth();
                             this._moveFocusTo(new Date(this.state.cursor.getFullYear(), this.state.cursor.getMonth(), 1));
                             this._positionPopover();
                         });
@@ -1106,13 +1215,23 @@ tbody tr.visible {
                     this._onPopKeydown = (e) => {
                         if (!this.state.open) return;
                         const k = e.key;
-                        if (k === "Escape") { e.preventDefault(); this.close(); this.el.display.focus(); return; }
+                        if (k === "Escape") {
+                            e.preventDefault();
+                            this.close();
+                            this.el.display.focus();
+                            return;
+                        }
                         const focusable = this._focusables();
                         if (k === "Tab") {
                             if (focusable.length) {
                                 const idx = focusable.indexOf(document.activeElement);
-                                if (e.shiftKey && (idx === 0)) { e.preventDefault(); focusable[focusable.length - 1].focus(); }
-                                else if (!e.shiftKey && (idx === focusable.length - 1)) { e.preventDefault(); focusable[0].focus(); }
+                                if (e.shiftKey && idx === 0) {
+                                    e.preventDefault();
+                                    focusable[focusable.length - 1].focus();
+                                } else if (!e.shiftKey && idx === focusable.length - 1) {
+                                    e.preventDefault();
+                                    focusable[0].focus();
+                                }
                             }
                             return;
                         }
@@ -1120,26 +1239,60 @@ tbody tr.visible {
                         if (!dayBtn) return;
                         let targetDate = this.state.focusDay || this._firstOfMonthFocusable();
                         if (!targetDate) targetDate = new Date(this.state.cursor);
-                        if (k === "ArrowLeft") { e.preventDefault(); this._moveFocusTo(addDays(targetDate, -1)); }
-                        else if (k === "ArrowRight") { e.preventDefault(); this._moveFocusTo(addDays(targetDate, 1)); }
-                        else if (k === "ArrowUp") { e.preventDefault(); this._moveFocusTo(addDays(targetDate, -7)); }
-                        else if (k === "ArrowDown") { e.preventDefault(); this._moveFocusTo(addDays(targetDate, 7)); }
-                        else if (k === "Home") { e.preventDefault(); const dow = (targetDate.getDay() - this.opts.firstDayOfWeek + 7) % 7; this._moveFocusTo(addDays(targetDate, -dow)); }
-                        else if (k === "End") { e.preventDefault(); const dow = (targetDate.getDay() - this.opts.firstDayOfWeek + 7) % 7; this._moveFocusTo(addDays(targetDate, 6 - dow)); }
-                        else if (k === "PageUp") { e.preventDefault(); this.state.cursor = addMonths(this.state.cursor, -1); this._rerenderGrid(); this._moveFocusTo(addDays(targetDate, -30)); this._announceMonth(); this._positionPopover(); }
-                        else if (k === "PageDown") { e.preventDefault(); this.state.cursor = addMonths(this.state.cursor, 1); this._rerenderGrid(); this._moveFocusTo(addDays(targetDate, 30)); this._announceMonth(); this._positionPopover(); }
-                        else if (k === "Enter" || k === " ") { e.preventDefault(); dayBtn.click(); }
+                        if (k === "ArrowLeft") {
+                            e.preventDefault();
+                            this._moveFocusTo(addDays(targetDate, -1));
+                        } else if (k === "ArrowRight") {
+                            e.preventDefault();
+                            this._moveFocusTo(addDays(targetDate, 1));
+                        } else if (k === "ArrowUp") {
+                            e.preventDefault();
+                            this._moveFocusTo(addDays(targetDate, -7));
+                        } else if (k === "ArrowDown") {
+                            e.preventDefault();
+                            this._moveFocusTo(addDays(targetDate, 7));
+                        } else if (k === "Home") {
+                            e.preventDefault();
+                            const dow = (targetDate.getDay() - this.opts.firstDayOfWeek + 7) % 7;
+                            this._moveFocusTo(addDays(targetDate, -dow));
+                        } else if (k === "End") {
+                            e.preventDefault();
+                            const dow = (targetDate.getDay() - this.opts.firstDayOfWeek + 7) % 7;
+                            this._moveFocusTo(addDays(targetDate, 6 - dow));
+                        } else if (k === "PageUp") {
+                            e.preventDefault();
+                            this.state.cursor = addMonths(this.state.cursor, -1);
+                            this._rerenderGrid();
+                            this._moveFocusTo(addDays(targetDate, -30));
+                            this._announceMonth();
+                            this._positionPopover();
+                        } else if (k === "PageDown") {
+                            e.preventDefault();
+                            this.state.cursor = addMonths(this.state.cursor, 1);
+                            this._rerenderGrid();
+                            this._moveFocusTo(addDays(targetDate, 30));
+                            this._announceMonth();
+                            this._positionPopover();
+                        } else if (k === "Enter" || k === " ") {
+                            e.preventDefault();
+                            dayBtn.click();
+                        }
                     };
                     document.addEventListener("keydown", this._onPopKeydown, true);
-                    this._onDocClick = (e) => { if (!this.state.open) return; if (this.root.contains(e.target)) return; this.close(); };
+                    this._onDocClick = (e) => {
+                        if (!this.state.open) return;
+                        if (this.root.contains(e.target)) return;
+                        this.close();
+                    };
                     document.addEventListener("mousedown", this._onDocClick);
                     this._onViewportChange = () => this._positionPopover();
                     window.addEventListener("resize", this._onViewportChange, { passive: true });
                     window.addEventListener("scroll", this._onViewportChange, { passive: true });
-                    this.el.sentinels.forEach(s => {
+                    this.el.sentinels.forEach((s) => {
                         s.addEventListener("focus", () => {
                             const f = this._focusables();
-                            if (s.dataset.sentinel === "start") f[f.length - 1]?.focus(); else f[0]?.focus();
+                            if (s.dataset.sentinel === "start") f[f.length - 1]?.focus();
+                            else f[0]?.focus();
                         });
                     });
                     this._removeListeners = () => {
@@ -1149,55 +1302,102 @@ tbody tr.visible {
                         window.removeEventListener("scroll", this._onViewportChange);
                     };
                 }
-                _syncOpen() { this.el.pop.classList.toggle("open", this.state.open); this.el.display.setAttribute("aria-expanded", String(this.state.open)); if (typeof this.opts.onOpenChange === "function") this.opts.onOpenChange(this.state.open); }
+                _syncOpen() {
+                    this.el.pop.classList.toggle("open", this.state.open);
+                    this.el.display.setAttribute("aria-expanded", String(this.state.open));
+                    if (typeof this.opts.onOpenChange === "function") this.opts.onOpenChange(this.state.open);
+                }
                 _renderWeekdays() {
                     const base = new Date(2023, 0, 1);
-                    const order = [...Array(7).keys()].map(i => (i + this.opts.firstDayOfWeek) % 7);
-                    this.el.week.innerHTML = order.map(dow => { const d = addDays(base, dow); return `<div class="drp-wd">${this.weekdayFormatter.format(d).slice(0, 2)}</div>`; }).join("");
+                    const order = [...Array(7).keys()].map((i) => (i + this.opts.firstDayOfWeek) % 7);
+                    this.el.week.innerHTML = order
+                        .map((dow) => {
+                            const d = addDays(base, dow);
+                            return `<div class="drp-wd">${this.weekdayFormatter.format(d).slice(0, 2)}</div>`;
+                        })
+                        .join("");
                 }
                 _daysForGrid(monthDate) {
                     const first = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
                     const startOffset = (first.getDay() - this.opts.firstDayOfWeek + 7) % 7;
                     const gridStart = addDays(first, -startOffset);
-                    const days = []; for (let i = 0; i < 42; i++) days.push(addDays(gridStart, i)); return days;
+                    const days = [];
+                    for (let i = 0; i < 42; i++) days.push(addDays(gridStart, i));
+                    return days;
                 }
                 _rerenderGrid() {
                     const month = this.state.cursor;
                     this.el.caption.textContent = this.monthFormatter.format(month);
                     const days = this._daysForGrid(month);
-                    const inRange = (d) => { if (!this.state.start || !this.state.end) return false; const t = d.getTime(), a = this.state.start.getTime(), b = this.state.end.getTime(); return t > Math.min(a, b) && t < Math.max(a, b); };
-                    const previewRange = (d) => { if (!this.state.start || this.state.end || !this.state.preview) return false; const t = d.getTime(), a = this.state.start.getTime(), b = this.state.preview.getTime(); return t > Math.min(a, b) && t < Math.max(a, b); };
+                    const inRange = (d) => {
+                        if (!this.state.start || !this.state.end) return false;
+                        const t = d.getTime(),
+                            a = this.state.start.getTime(),
+                            b = this.state.end.getTime();
+                        return t > Math.min(a, b) && t < Math.max(a, b);
+                    };
+                    const previewRange = (d) => {
+                        if (!this.state.start || this.state.end || !this.state.preview) return false;
+                        const t = d.getTime(),
+                            a = this.state.start.getTime(),
+                            b = this.state.preview.getTime();
+                        return t > Math.min(a, b) && t < Math.max(a, b);
+                    };
                     const today = clamp(new Date());
-                    const html = days.map(d => {
-                        const outside = d.getMonth() !== month.getMonth();
-                        const isStart = this.state.start && isSameDay(d, this.state.start);
-                        const isEnd = this.state.end && isSameDay(d, this.state.end);
-                        const isIn = inRange(d);
-                        const isPrev = previewRange(d);
-                        const isToday = isSameDay(d, today);
-                        const classes = ["drp-day"]; if (outside) classes.push("is-outside"); if (isIn) classes.push("is-inrange"); if (isPrev) classes.push("is-preview"); if (isStart) classes.push("is-start"); if (isEnd) classes.push("is-end"); if (isToday) classes.push("is-today");
-                        const ariaSelected = (isStart || isEnd) ? "true" : "false";
-                        const label = this.formatter.format(d);
-                        return `<button class="${classes.join(" ")}" role="gridcell" data-date="${d.toISOString()}" aria-selected="${ariaSelected}" aria-label="${label}" type="button">${d.getDate()}</button>`;
-                    }).join("");
+                    const html = days
+                        .map((d) => {
+                            const outside = d.getMonth() !== month.getMonth();
+                            const isStart = this.state.start && isSameDay(d, this.state.start);
+                            const isEnd = this.state.end && isSameDay(d, this.state.end);
+                            const isIn = inRange(d);
+                            const isPrev = previewRange(d);
+                            const isToday = isSameDay(d, today);
+                            const classes = ["drp-day"];
+                            if (outside) classes.push("is-outside");
+                            if (isIn) classes.push("is-inrange");
+                            if (isPrev) classes.push("is-preview");
+                            if (isStart) classes.push("is-start");
+                            if (isEnd) classes.push("is-end");
+                            if (isToday) classes.push("is-today");
+                            const ariaSelected = isStart || isEnd ? "true" : "false";
+                            const label = this.formatter.format(d);
+                            return `<button class="${classes.join(" ")}" role="gridcell" data-date="${d.toISOString()}" aria-selected="${ariaSelected}" aria-label="${label}" type="button">${d.getDate()}</button>`;
+                        })
+                        .join("");
                     this.el.grid.innerHTML = html;
-                    this.el.grid.querySelectorAll(".drp-day").forEach(btn => {
+                    this.el.grid.querySelectorAll(".drp-day").forEach((btn) => {
                         const date = new Date(btn.dataset.date);
-                        btn.addEventListener("mouseenter", () => { if (this.state.start && !this.state.end) { this.state.preview = clamp(date); this._applyPreviewClasses(); } });
-                        btn.addEventListener("click", () => { this._selectDate(date); });
+                        btn.addEventListener("mouseenter", () => {
+                            if (this.state.start && !this.state.end) {
+                                this.state.preview = clamp(date);
+                                this._applyPreviewClasses();
+                            }
+                        });
+                        btn.addEventListener("click", () => {
+                            this._selectDate(date);
+                        });
                     });
                     if (!this._gridMouseleaveBound) {
-                        this.el.grid.addEventListener("mouseleave", () => { if (!this.state.end) { this.state.preview = undefined; this._applyPreviewClasses(); } });
+                        this.el.grid.addEventListener("mouseleave", () => {
+                            if (!this.state.end) {
+                                this.state.preview = undefined;
+                                this._applyPreviewClasses();
+                            }
+                        });
                         this._gridMouseleaveBound = true;
                     }
                     if (this.state.open) this._positionPopover();
                 }
                 _applyPreviewClasses() {
-                    this.el.grid.querySelectorAll(".drp-day").forEach(btn => { btn.classList.remove("is-preview", "is-preview-edge") });
+                    this.el.grid.querySelectorAll(".drp-day").forEach((btn) => {
+                        btn.classList.remove("is-preview", "is-preview-edge");
+                    });
                     if (!this.state.preview || !this.state.start || this.state.end) return;
-                    const a = this.state.start.getTime(); const b = this.state.preview.getTime();
-                    const min = Math.min(a, b); const max = Math.max(a, b);
-                    this.el.grid.querySelectorAll(".drp-day").forEach(btn => {
+                    const a = this.state.start.getTime();
+                    const b = this.state.preview.getTime();
+                    const min = Math.min(a, b);
+                    const max = Math.max(a, b);
+                    this.el.grid.querySelectorAll(".drp-day").forEach((btn) => {
                         const t = new Date(btn.dataset.date).getTime();
                         if (t > min && t < max) btn.classList.add("is-preview");
                         if (t === b) btn.classList.add("is-preview-edge");
@@ -1206,178 +1406,284 @@ tbody tr.visible {
                 _selectDate(date) {
                     const d = clamp(date);
                     if (!this.state.start || (this.state.start && this.state.end)) {
-                        this.state.start = d; this.state.end = undefined; this.state.preview = undefined; this._rerenderGrid(); this._updateFieldTexts(); this._emitChange(); return;
+                        this.state.start = d;
+                        this.state.end = undefined;
+                        this.state.preview = undefined;
+                        this._rerenderGrid();
+                        this._updateFieldTexts();
+                        this._emitChange();
+                        return;
                     }
-                    if (d.getTime() < this.state.start.getTime()) { this.state.end = this.state.start; this.state.start = d; }
-                    else { this.state.end = d; }
-                    this.state.preview = undefined; this._finishSelection(true);
+                    if (d.getTime() < this.state.start.getTime()) {
+                        this.state.end = this.state.start;
+                        this.state.start = d;
+                    } else {
+                        this.state.end = d;
+                    }
+                    this.state.preview = undefined;
+                    this._finishSelection(true);
                 }
-                _finishSelection(closeAfter) { this._rerenderGrid(); this._updateFieldTexts(); this._emitChange(); if (closeAfter) { this.close(); this.el.display.focus(); } }
-                _updateFieldTexts() { const fmt = d => d ? this.formatter.format(d) : "—"; this.el.startText.textContent = fmt(this.state.start); this.el.endText.textContent = fmt(this.state.end); }
-                _announceMonth() { this.el.live.textContent = this.monthFormatter.format(this.state.cursor); }
+                _finishSelection(closeAfter) {
+                    this._rerenderGrid();
+                    this._updateFieldTexts();
+                    this._emitChange();
+                    if (closeAfter) {
+                        this.close();
+                        this.el.display.focus();
+                    }
+                }
+                _updateFieldTexts() {
+                    const fmt = (d) => (d ? this.formatter.format(d) : "—");
+                    this.el.startText.textContent = fmt(this.state.start);
+                    this.el.endText.textContent = fmt(this.state.end);
+                }
+                _announceMonth() {
+                    this.el.live.textContent = this.monthFormatter.format(this.state.cursor);
+                }
                 _emitChange() {
-                    const toISO = d => d ? new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10) : "";
-                    const s = document.getElementById("start"); const e = document.getElementById("end");
-                    if (s) s.value = toISO(this.state.start); if (e) e.value = toISO(this.state.end);
+                    const toISO = (d) => (d ? new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10) : "");
+                    const s = document.getElementById("start");
+                    const e = document.getElementById("end");
+                    if (s) s.value = toISO(this.state.start);
+                    if (e) e.value = toISO(this.state.end);
                     if (typeof this.opts.onChange === "function") this.opts.onChange({ start: this.state.start, end: this.state.end });
                 }
-                _firstOfMonthFocusable() { return new Date(this.state.cursor.getFullYear(), this.state.cursor.getMonth(), 1); }
+                _firstOfMonthFocusable() {
+                    return new Date(this.state.cursor.getFullYear(), this.state.cursor.getMonth(), 1);
+                }
                 _moveFocusTo(date) {
                     const m = this.state.cursor.getMonth();
-                    if (date.getMonth() !== m || date.getFullYear() !== this.state.cursor.getFullYear()) { this.state.cursor = new Date(date.getFullYear(), date.getMonth(), 1); this._rerenderGrid(); }
+                    if (date.getMonth() !== m || date.getFullYear() !== this.state.cursor.getFullYear()) {
+                        this.state.cursor = new Date(date.getFullYear(), date.getMonth(), 1);
+                        this._rerenderGrid();
+                    }
                     const iso = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString().slice(0, 10);
-                    const btn = Array.from(this.el.grid.querySelectorAll(".drp-day")).find(b => b.dataset.date.slice(0, 10) === iso);
-                    if (btn) { this.state.focusDay = clamp(date); btn.focus(); }
+                    const btn = Array.from(this.el.grid.querySelectorAll(".drp-day")).find((b) => b.dataset.date.slice(0, 10) === iso);
+                    if (btn) {
+                        this.state.focusDay = clamp(date);
+                        btn.focus();
+                    }
                 }
-                _focusInitialDay() { let target = this.state.start || this._firstOfMonthFocusable(); if (!target) return; this._moveFocusTo(target); }
-                _focusables() { return Array.from(this.el.pop.querySelectorAll("button:not([disabled])")); }
+                _focusInitialDay() {
+                    let target = this.state.start || this._firstOfMonthFocusable();
+                    if (!target) return;
+                    this._moveFocusTo(target);
+                }
+                _focusables() {
+                    return Array.from(this.el.pop.querySelectorAll("button:not([disabled])"));
+                }
             }
             window.DateRangePicker = DateRangePicker;
         })();
     </script>
 
     <script>
-        const money0 = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Number(n || 0));
-        const toast = (msg, t = 2600) => { const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), t); };
-        const fmtDateMDY = iso => {
-            if (!iso) return '';
+        const money0 = (n) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(Number(n || 0));
+        const toast = (msg, t = 2600) => {
+            const el = document.getElementById("toast");
+            el.textContent = msg;
+            el.classList.add("show");
+            setTimeout(() => el.classList.remove("show"), t);
+        };
+        const fmtDateMDY = (iso) => {
+            if (!iso) return "";
             const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso));
             if (!m) return iso;
-            const y = +m[1], mo = +m[2], d = +m[3];
+            const y = +m[1],
+                mo = +m[2],
+                d = +m[3];
             return `${mo}/${d}/${y}`;
         };
 
-  // Derive a simple tier from the ticket price if not provided by API
-  function tierOf(price) {
-    const p = Number(price || 0);
-    if (p >= 1000) return 'VIP';
-    if (p >= 500)  return 'Premium';
-    if (p >= 200)  return 'Standard';
-    if (p >  0)    return 'General Admission';
-    return '';
-  }
+        function tierOf(price) {
+            const p = Number(price || 0);
+            if (p >= 1000) return "VIP";
+            if (p >= 500) return "Premium";
+            if (p >= 200) return "Standard";
+            if (p > 0) return "General Admission";
+            return "";
+        }
 
+        const sum = (items, pick) => items.reduce((s, r) => s + (Number(pick(r)) || 0), 0);
+        const fmtPct = (v) => `${v.toFixed(1)}%`;
+        const deltaClass = (v) => (v > 0 ? "up" : v < 0 ? "down" : "flat");
+        const deltaArrow = (v) => (v > 0 ? "↗" : v < 0 ? "↘" : "→");
+        const pctDelta = (now, prev) => {
+            if (!isFinite(prev) || prev === 0) return now === 0 ? 0 : 100;
+            return ((now - prev) / Math.abs(prev)) * 100;
+        };
 
+        function getSelectedRange() {
+            const s = document.getElementById("start")?.value;
+            const e = document.getElementById("end")?.value;
+            if (!s || !e) return null;
+            const [sy, sm, sd] = s.split("-").map(Number);
+            const [ey, em, ed] = e.split("-").map(Number);
+            const start = new Date(Date.UTC(sy, sm - 1, sd));
+            const end = new Date(Date.UTC(ey, em - 1, ed));
+            const lenDays = Math.max(1, Math.round((end - start) / 86400000) + 1);
+            const prevEnd = new Date(end.getTime() - 86400000 * lenDays);
+            const prevStart = new Date(prevEnd.getTime() - 86400000 * (lenDays - 1));
+            const toISO = (d) => d.toISOString().slice(0, 10);
+            return { startISO: s, endISO: e, prevStartISO: toISO(prevStart), prevEndISO: toISO(prevEnd) };
+        }
 
-        function setKPIs(rows) {
-            const totalGross = rows.reduce((s, r) => s + (Number(r.grossRevenue) || 0), 0);
-            const totalTickets = rows.reduce((s, r) => s + (Number(r.ticketCount) || 0), 0);
-            const avgTicket = totalTickets > 0 ? (totalGross / totalTickets) : 0;
-            document.getElementById('kpiGrossRevenue').textContent = money0(totalGross);
-            document.getElementById('kpiAvgTicketPrice').textContent = money0(avgTicket);
-            document.getElementById('kpiTicketsSold').textContent = String(totalTickets);
+        function setKPIs(rowsNow, rowsPrev) {
+            const grossNow = sum(rowsNow, (r) => r.grossRevenue);
+            const tixNow = sum(rowsNow, (r) => r.ticketCount);
+            const avgNow = tixNow > 0 ? grossNow / tixNow : 0;
+
+            const grossPrev = sum(rowsPrev, (r) => r.grossRevenue);
+            const tixPrev = sum(rowsPrev, (r) => r.ticketCount);
+            const avgPrev = tixPrev > 0 ? grossPrev / tixPrev : 0;
+
+            document.getElementById("kpiGrossRevenue").textContent = money0(grossNow);
+            document.getElementById("kpiAvgTicketPrice").textContent = money0(avgNow);
+            document.getElementById("kpiTicketsSold").textContent = String(tixNow);
+
+            const deltas = [
+                { id: "kpiGrossRevenueDelta", now: grossNow, prev: grossPrev },
+                { id: "kpiAvgTicketPriceDelta", now: avgNow, prev: avgPrev },
+                { id: "kpiTicketsSoldDelta", now: tixNow, prev: tixPrev }
+            ];
+            deltas.forEach(({ id, now, prev }) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const pct = pctDelta(now, prev);
+                el.className = "delta " + deltaClass(pct);
+                el.textContent = `${deltaArrow(pct)} ${fmtPct(Math.abs(pct))}`;
+            });
         }
 
         function render(data) {
             try {
                 const rows = Array.isArray(data?.signups) ? data.signups.slice() : [];
                 rows.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-                setKPIs(rows);
-                const tbody = document.getElementById('tbody');
-                const html = rows.map(r => `
-          <tr>
-            <td>${fmtDateMDY(r.date)}</td>
-            <td><div style="font-weight:600">${r.clientName || ''}</div><div style="font-size:0.813rem;color:var(--muted);margin-top:2px">${r.email || ''}</div></td>
-            <td>${money0(r.ticketPrice || 0)}</td>
-            <td>${money0(r.grossRevenue || 0)}</td>
-            <td>${Number(r.ticketCount || 0)}</td>
-            <td>${r.ticketTier || ''}</td>
-            <td>${r.processor || ''}</td>
-          </tr>
-        `).join('');
+                const tbody = document.getElementById("tbody");
+                const html = rows
+                    .map(
+                        (r) => `
+            <tr>
+              <td>${fmtDateMDY(r.date)}</td>
+              <td>
+                <div style="font-weight:600">${r.clientName || ""}</div>
+                <div style="font-size:0.813rem;color:var(--muted);margin-top:2px">${r.email || ""}</div>
+              </td>
+              <td>${money0(r.ticketPrice || 0)}</td>
+              <td>${money0(r.grossRevenue || 0)}</td>
+              <td>${Number(r.ticketCount || 0)}</td>
+              <td>${r.ticketTier || ""}</td>
+              <td>${r.processor || ""}</td>
+            </tr>`
+                    )
+                    .join("");
                 tbody.innerHTML = html;
                 updateTable();
             } catch (e) {
                 console.error(e);
-                toast('Render error');
+                toast("Render error");
             }
         }
 
         async function requestData(opts = {}) {
-            const spin = document.getElementById('spin');
-            if (spin) spin.classList.add('show');
+            const spin = document.getElementById("spin");
+            spin && spin.classList.add("show");
             try {
-                // Build absolute URL against current origin so it works on Vercel
-                const u = new URL(GAS_URL, window.location.origin);
-                u.searchParams.set('mode', 'json');
-                if (opts.start) u.searchParams.set('start', opts.start);
-                if (opts.end) u.searchParams.set('end', opts.end);
-                const res = await fetch(u.toString(), { method: 'GET' });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const json = await res.json();
-                render(json);
+                const uNow = new URL(GAS_URL, window.location.origin);
+                uNow.searchParams.set("mode", "json");
+                if (opts.start) uNow.searchParams.set("start", opts.start);
+                if (opts.end) uNow.searchParams.set("end", opts.end);
+                const resNow = await fetch(uNow.toString());
+                if (!resNow.ok) throw new Error(`HTTP ${resNow.status}`);
+                const jsonNow = await resNow.json();
+                const rowsNow = Array.isArray(jsonNow?.signups) ? jsonNow.signups.slice() : [];
+
+                const range = getSelectedRange();
+                let rowsPrev = [];
+                if (range) {
+                    const uPrev = new URL(GAS_URL, window.location.origin);
+                    uPrev.searchParams.set("mode", "json");
+                    uPrev.searchParams.set("start", range.prevStartISO);
+                    uPrev.searchParams.set("end", range.prevEndISO);
+                    const resPrev = await fetch(uPrev.toString());
+                    if (resPrev.ok) {
+                        const jsonPrev = await resPrev.json();
+                        rowsPrev = Array.isArray(jsonPrev?.signups) ? jsonPrev.signups.slice() : [];
+                    }
+                }
+
+                render({ signups: rowsNow });
+                setKPIs(rowsNow, rowsPrev);
             } catch (err) {
                 console.error(err);
-                toast('Data load failed');
+                toast("Data load failed");
             } finally {
-                if (spin) spin.classList.remove('show');
+                spin && spin.classList.remove("show");
             }
         }
 
         function applyRange() {
-            const s = document.getElementById('start')?.value || '';
-            const e = document.getElementById('end')?.value || '';
-            if (!s || !e) { toast('Select a date range'); return; }
+            const s = document.getElementById("start")?.value || "";
+            const e = document.getElementById("end")?.value || "";
+            if (!s || !e) {
+                toast("Select a date range");
+                return;
+            }
             requestData({ start: s, end: e });
         }
-        function refresh() { requestData({}); }
+        function refresh() {
+            requestData({});
+        }
 
         let currentPage = 1;
         let pageSize = 20;
         let allRows = [];
 
         function updateTable() {
-            const tbody = document.getElementById('tbody');
-            const rows = tbody.querySelectorAll('tr');
+            const tbody = document.getElementById("tbody");
+            const rows = tbody.querySelectorAll("tr");
             allRows = Array.from(rows);
             const totalRecords = allRows.length;
-            
-            const startIndex = pageSize === 'all' ? 0 : (currentPage - 1) * pageSize;
-            const endIndex = pageSize === 'all' ? totalRecords : startIndex + pageSize;
-            
-            allRows.forEach(row => row.classList.remove('visible'));
-            
+
+            const startIndex = pageSize === "all" ? 0 : (currentPage - 1) * pageSize;
+            const endIndex = pageSize === "all" ? totalRecords : startIndex + pageSize;
+
+            allRows.forEach((row) => row.classList.remove("visible"));
             for (let i = startIndex; i < endIndex && i < totalRecords; i++) {
-                allRows[i].classList.add('visible');
+                allRows[i].classList.add("visible");
             }
-            
+
             const displayStart = totalRecords === 0 ? 0 : startIndex + 1;
             const displayEnd = Math.min(endIndex, totalRecords);
-            document.getElementById('start-record').textContent = displayStart;
-            document.getElementById('end-record').textContent = displayEnd;
-            document.getElementById('total-records').textContent = totalRecords;
-            
+            document.getElementById("start-record").textContent = displayStart;
+            document.getElementById("end-record").textContent = displayEnd;
+            document.getElementById("total-records").textContent = totalRecords;
+
             updatePagination();
         }
 
         function updatePagination() {
             const totalRecords = allRows.length;
-            const totalPages = pageSize === 'all' ? 1 : Math.ceil(totalRecords / pageSize);
-            const pageNumbersDiv = document.getElementById('page-numbers');
-            pageNumbersDiv.innerHTML = '';
-            
+            const totalPages = pageSize === "all" ? 1 : Math.ceil(totalRecords / pageSize);
+            const pageNumbersDiv = document.getElementById("page-numbers");
+            pageNumbersDiv.innerHTML = "";
+
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, currentPage + 2);
-            
-            if (currentPage <= 3) {
-                endPage = Math.min(5, totalPages);
-            }
-            if (currentPage >= totalPages - 2) {
-                startPage = Math.max(1, totalPages - 4);
-            }
-            
+
+            if (currentPage <= 3) endPage = Math.min(5, totalPages);
+            if (currentPage >= totalPages - 2) startPage = Math.max(1, totalPages - 4);
+
             for (let i = startPage; i <= endPage; i++) {
-                const button = document.createElement('button');
+                const button = document.createElement("button");
                 button.textContent = i;
                 button.onclick = () => goToPage(i);
-                if (i === currentPage) {
-                    button.classList.add('active');
-                }
+                if (i === currentPage) button.classList.add("active");
                 pageNumbersDiv.appendChild(button);
             }
-            
-            document.getElementById('prev-btn').disabled = currentPage === 1;
-            document.getElementById('next-btn').disabled = currentPage === totalPages || pageSize === 'all';
+
+            document.getElementById("prev-btn").disabled = currentPage === 1;
+            document.getElementById("next-btn").disabled = currentPage === totalPages || pageSize === "all";
         }
 
         function goToPage(page) {
@@ -1400,8 +1706,8 @@ tbody tr.visible {
             }
         }
 
-        document.getElementById('page-size').addEventListener('change', function() {
-            pageSize = this.value === 'all' ? 'all' : parseInt(this.value);
+        document.getElementById("page-size").addEventListener("change", function () {
+            pageSize = this.value === "all" ? "all" : parseInt(this.value);
             currentPage = 1;
             updateTable();
         });
@@ -1410,22 +1716,24 @@ tbody tr.visible {
             const today = new Date();
             const first = new Date(today.getFullYear(), today.getMonth(), 1);
             const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            const drp = new DateRangePicker(document.getElementById('date-range'), {
-                mode: 'range',
+            const drp = new DateRangePicker(document.getElementById("date-range"), {
+                mode: "range",
                 value: { start: first, end: last },
-                locale: 'en-US',
+                locale: "en-US",
                 firstDayOfWeek: 0,
                 onChange: ({ start, end }) => {
-                    const iso = d => d ? new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10) : '';
-                    const s = document.getElementById('start'); const e = document.getElementById('end');
+                    const iso = (d) => (d ? new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10) : "");
+                    const s = document.getElementById("start");
+                    const e = document.getElementById("end");
                     if (s) s.value = iso(start);
                     if (e) e.value = iso(end);
                 }
             });
             window._drp = drp;
 
-            const s = document.getElementById('start'); const e = document.getElementById('end');
-            const toISO = d => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10);
+            const s = document.getElementById("start");
+            const e = document.getElementById("end");
+            const toISO = (d) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10);
             if (s) s.value = toISO(first);
             if (e) e.value = toISO(last);
 
@@ -1435,48 +1743,46 @@ tbody tr.visible {
 
     <script>
         function downloadPdf() {
-            const spin = document.getElementById('spin');
-            spin && spin.classList.add('show');
-            const start = document.getElementById('start')?.value || '';
-            const end = document.getElementById('end')?.value || '';
+            const spin = document.getElementById("spin");
+            spin && spin.classList.add("show");
+            const start = document.getElementById("start")?.value || "";
+            const end = document.getElementById("end")?.value || "";
             const fileName = `MITA_2_Ticket_Sales_Report_${start}_${end}.pdf`;
-            const grossRevenue = document.getElementById('kpiGrossRevenue')?.textContent || '—';
-            const avgTicketPrice = document.getElementById('kpiAvgTicketPrice')?.textContent || '—';
-            const ticketsSold = document.getElementById('kpiTicketsSold')?.textContent || '—';
+            const grossRevenue = document.getElementById("kpiGrossRevenue")?.textContent || "—";
+            const avgTicketPrice = document.getElementById("kpiAvgTicketPrice")?.textContent || "—";
+            const ticketsSold = document.getElementById("kpiTicketsSold")?.textContent || "—";
             const formatDate = (isoDate) => {
-                if (!isoDate) return '';
+                if (!isoDate) return "";
                 const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
                 if (!m) return isoDate;
-                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 return `${months[+m[2] - 1]} ${+m[3]}, ${m[1]}`;
             };
-            if (typeof window.jspdf !== 'undefined') {
+            if (typeof window.jspdf !== "undefined") {
                 try {
                     const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF('p', 'pt', 'letter');
+                    const pdf = new jsPDF("p", "pt", "letter");
                     const pageW = pdf.internal.pageSize.getWidth();
                     const pageH = pdf.internal.pageSize.getHeight();
                     const leftMargin = 80;
                     pdf.setFillColor(0, 0, 0);
-                    pdf.rect(0, 0, pageW, pageH, 'F');
-                    const logoEl = document.querySelector('.logo');
+                    pdf.rect(0, 0, pageW, pageH, "F");
+                    const logoEl = document.querySelector(".logo");
                     if (logoEl && logoEl.complete) {
                         try {
                             const logoH = 40;
                             const logoW = (logoEl.naturalWidth / logoEl.naturalHeight) * logoH;
-                            pdf.addImage(logoEl, 'PNG', leftMargin, 50, logoW, logoH);
-                        } catch (e) {
-                            console.warn('Logo add failed:', e);
-                        }
+                            pdf.addImage(logoEl, "PNG", leftMargin, 50, logoW, logoH);
+                        } catch { }
                     }
                     let yPos = 120;
-                    pdf.setFont('helvetica', 'bold');
+                    pdf.setFont("helvetica", "bold");
                     pdf.setFontSize(20);
                     pdf.setTextColor(245, 245, 245);
-                    const title = 'MITA 2 TICKET SALES REPORT';
+                    const title = "MITA 2 TICKET SALES REPORT";
                     pdf.text(title, leftMargin, yPos);
                     yPos += 50;
-                    pdf.setFont('helvetica', 'normal');
+                    pdf.setFont("helvetica", "normal");
                     pdf.setFontSize(12);
                     pdf.setTextColor(180, 180, 180);
                     const period = `Period: ${formatDate(start)} - ${formatDate(end)}`;
@@ -1487,64 +1793,58 @@ tbody tr.visible {
                     pdf.line(leftMargin, yPos, pageW - 80, yPos);
                     yPos += 50;
                     const metrics = [
-                        { label: 'Gross Revenue', value: grossRevenue },
-                        { label: 'Average Ticket Price', value: avgTicketPrice },
-                        { label: 'Tickets Sold', value: ticketsSold }
+                        { label: "Gross Revenue", value: grossRevenue },
+                        { label: "Average Ticket Price", value: avgTicketPrice },
+                        { label: "Tickets Sold", value: ticketsSold }
                     ];
                     metrics.forEach((metric) => {
-                        pdf.setFont('helvetica', 'bold');
+                        pdf.setFont("helvetica", "bold");
                         pdf.setFontSize(9);
                         pdf.setTextColor(176, 176, 176);
                         pdf.text(metric.label.toUpperCase(), leftMargin, yPos);
                         yPos += 25;
-                        pdf.setFont('helvetica', 'bold');
+                        pdf.setFont("helvetica", "bold");
                         pdf.setFontSize(24);
                         pdf.setTextColor(245, 245, 245);
                         pdf.text(metric.value, leftMargin, yPos);
                         yPos += 45;
                     });
                     pdf.save(fileName);
-                    toast('PDF report downloaded');
-                    spin && spin.classList.remove('show');
+                    toast("PDF report downloaded");
+                    spin && spin.classList.remove("show");
                 } catch (err) {
                     console.error(err);
-                    toast('PDF generation failed: ' + err.message);
-                    spin && spin.classList.remove('show');
+                    toast("PDF generation failed: " + err.message);
+                    spin && spin.classList.remove("show");
                 }
             } else {
-                spin && spin.classList.remove('show');
-                toast('jsPDF not available');
+                spin && spin.classList.remove("show");
+                toast("jsPDF not available");
             }
         }
     </script>
 
     <script>
-        // Add this function to your existing <script> section
         function sortTable(columnIndex) {
             const table = document.getElementById("signupsTable");
             const tbody = table.querySelector("tbody");
             const rows = Array.from(tbody.rows);
-
-            // Get the header cell to track sort direction
             const th = table.querySelector("thead").rows[0].cells[columnIndex];
-            const currentOrder = th.dataset.order || '';
-            const ascending = currentOrder !== 'asc';
+            const currentOrder = th.dataset.order || "";
+            const ascending = currentOrder !== "asc";
 
-            // Sort rows based on column content
             rows.sort((a, b) => {
                 let aVal = a.cells[columnIndex].textContent.trim();
                 let bVal = b.cells[columnIndex].textContent.trim();
 
-                // Handle currency values (remove $ and commas)
-                if (aVal.includes('$')) {
-                    aVal = aVal.replace(/[$,]/g, '');
-                    bVal = bVal.replace(/[$,]/g, '');
+                if (aVal.includes("$")) {
+                    aVal = aVal.replace(/[$,]/g, "");
+                    bVal = bVal.replace(/[$,]/g, "");
                 }
 
-                // Handle dates in M/D/YYYY format
-                if (columnIndex === 0 && aVal.includes('/')) {
+                if (columnIndex === 0 && aVal.includes("/")) {
                     const parseDate = (str) => {
-                        const [m, d, y] = str.split('/').map(Number);
+                        const [m, d, y] = str.split("/").map(Number);
                         return new Date(y, m - 1, d).getTime();
                     };
                     const aTime = parseDate(aVal);
@@ -1552,36 +1852,26 @@ tbody tr.visible {
                     return ascending ? aTime - bTime : bTime - aTime;
                 }
 
-                // Try numeric comparison
                 const aNum = parseFloat(aVal);
                 const bNum = parseFloat(bVal);
-
-                if (!isNaN(aNum) && !isNaN(bNum)) {
-                    return ascending ? aNum - bNum : bNum - aNum;
-                }
-
-                // Fall back to string comparison
-                return ascending
-                    ? aVal.localeCompare(bVal, 'en', { sensitivity: 'base' })
-                    : bVal.localeCompare(aVal, 'en', { sensitivity: 'base' });
+                if (!isNaN(aNum) && !isNaN(bNum)) return ascending ? aNum - bNum : bNum - aNum;
+                return ascending ? aVal.localeCompare(bVal, "en", { sensitivity: "base" }) : bVal.localeCompare(aVal, "en", { sensitivity: "base" });
             });
 
-            // Re-append rows in sorted order
-            rows.forEach(row => tbody.appendChild(row));
-
-            // Update sort indicators on all headers
-            table.querySelectorAll('thead th').forEach(h => {
+            rows.forEach((row) => tbody.appendChild(row));
+            table.querySelectorAll("thead th").forEach((h) => {
                 delete h.dataset.order;
-                h.classList.remove('sorted-asc', 'sorted-desc');
+                h.classList.remove("sorted-asc", "sorted-desc");
             });
-
-            th.dataset.order = ascending ? 'asc' : 'desc';
-            th.classList.add(ascending ? 'sorted-asc' : 'sorted-desc');
+            th.dataset.order = ascending ? "asc" : "desc";
+            th.classList.add(ascending ? "sorted-asc" : "sorted-desc");
         }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
 </body>
 
 </html>
