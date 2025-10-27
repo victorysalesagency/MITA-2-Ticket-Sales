@@ -613,6 +613,17 @@
             vertical-align: middle;
         }
 
+        #compsTable tbody td {
+            padding: 1rem var(--cell-x);
+            border-bottom: 0.0625rem solid var(--border-soft);
+            font-size: 1rem;
+            color: var(--ink);
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+            height: 3.75rem;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
         tbody tr:last-child td {
             border-bottom: none;
         }
@@ -623,6 +634,15 @@
 
         #signupsTable th:first-child,
         #signupsTable td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 4;
+            background: var(--card);
+            box-shadow: 0.125rem 0 0 0 var(--border-soft);
+        }
+
+        #compsTable th:first-child,
+        #compsTable td:first-child {
             position: sticky;
             left: 0;
             z-index: 4;
