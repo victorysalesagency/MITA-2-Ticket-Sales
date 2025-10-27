@@ -965,37 +965,37 @@
                 <div class="label">Gross Revenue</div>
                 <div id="kpiGrossRevenue" class="value">—</div>
                 <div id="kpiGrossRevenueDelta" class="delta">—</div>
-                <div class="sub-label">vs last period</div>
+                <div class="sub-label">vs previous period</div>
             </div>
             <div class="kpi">
                 <div class="label">Avg. Ticket Price</div>
                 <div id="kpiAvgTicketPrice" class="value">—</div>
                 <div id="kpiAvgTicketPriceDelta" class="delta">—</div>
-                <div class="sub-label">vs last period</div>
+                <div class="sub-label">vs previous period</div>
             </div>
             <div class="kpi">
                 <div class="label">Tickets Sold</div>
                 <div id="kpiTicketsSold" class="value">—</div>
                 <div id="kpiTicketsSoldDelta" class="delta">—</div>
-                <div class="sub-label">vs last period</div>
+                <div class="sub-label">vs previous period</div>
             </div>
             <div class="kpi">
                 <div class="label">Paid Attendees</div>
                 <div id="kpiPaidAttendees" class="value">—</div>
                 <div id="kpiPaidAttendeesDelta" class="delta">—</div>
-                <div class="sub-label">vs last period</div>
+                <div class="sub-label">vs previous period</div>
             </div>
             <div class="kpi">
                 <div class="label">Comped Attendees</div>
                 <div id="kpiCompedAttendees" class="value">—</div>
                 <div id="kpiCompedAttendeesDelta" class="delta">—</div>
-                <div class="sub-label">vs last period</div>
+                <div class="sub-label">vs previous period</div>
             </div>
             <div class="kpi">
                 <div class="label">Total Attendees</div>
                 <div id="kpiTotalAttendees" class="value">—</div>
                 <div id="kpiTotalAttendeesDelta" class="delta">—</div>
-                <div class="sub-label">vs last period</div>
+                <div class="sub-label">vs previous period</div>
             </div>
         </div>
 
@@ -1049,7 +1049,6 @@
                             <th onclick="sortCompsTable(1)">Client</th>
                             <th onclick="sortCompsTable(2)">Quantity</th>
                             <th onclick="sortCompsTable(3)">Tier</th>
-                            <th onclick="sortCompsTable(4)">Processor</th>
                         </tr>
                     </thead>
                     <tbody id="comps-tbody"></tbody>
@@ -1698,7 +1697,6 @@
               </td>
               <td>${Number(r.ticketCount || 0)}</td>
               <td>${r.ticketTier || ""}</td>
-              <td>${r.processor || ""}</td>
             </tr>`
                     )
                     .join("");
