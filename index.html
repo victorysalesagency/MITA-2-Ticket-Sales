@@ -969,6 +969,24 @@
                 <div id="kpiTicketsSoldDelta" class="delta">—</div>
                 <div class="sub-label">vs last period</div>
             </div>
+            <div class="kpi">
+                <div class="label">Paid Attendees</div>
+                <div id="kpiPaidAttendees" class="value">—</div>
+                <div id="kpiPaidAttendeesDelta" class="delta">—</div>
+                <div class="sub-label">vs last period</div>
+            </div>
+            <div class="kpi">
+                <div class="label">Comped Attendees</div>
+                <div id="kpiCompedAttendees" class="value">—</div>
+                <div id="kpiCompedAttendeesDelta" class="delta">—</div>
+                <div class="sub-label">vs last period</div>
+            </div>
+            <div class="kpi">
+                <div class="label">Total Attendees</div>
+                <div id="kpiTotalAttendees" class="value">—</div>
+                <div id="kpiTotalAttendeesDelta" class="delta">—</div>
+                <div class="sub-label">vs last period</div>
+            </div>
         </div>
 
         <h2 class="section-title" style="margin-top: 18px;">Sign-Ups</h2>
@@ -1555,6 +1573,37 @@
             });
         }
 
+        function setKPIsFromAPI(jsonNow, jsonPrev) {
+            const kpisNow = jsonNow?.kpis || {};
+            const kpisPrev = jsonPrev?.kpis || {};
+
+            // Original KPIs
+            document.getElementById("kpiGrossRevenue").textContent = money0(kpisNow.grossRevenue || 0);
+            document.getElementById("kpiAvgTicketPrice").textContent = money0(kpisNow.avgTicketPrice || 0);
+            document.getElementById("kpiTicketsSold").textContent = String(kpisNow.ticketsSold || 0);
+
+            // New attendee KPIs
+            document.getElementById("kpiPaidAttendees").textContent = String(kpisNow.paidAttendees || 0);
+            document.getElementById("kpiCompedAttendees").textContent = String(kpisNow.compedAttendees || 0);
+            document.getElementById("kpiTotalAttendees").textContent = String(kpisNow.totalAttendees || 0);
+
+            const deltas = [
+                { id: "kpiGrossRevenueDelta", now: kpisNow.grossRevenue || 0, prev: kpisPrev.grossRevenue || 0 },
+                { id: "kpiAvgTicketPriceDelta", now: kpisNow.avgTicketPrice || 0, prev: kpisPrev.avgTicketPrice || 0 },
+                { id: "kpiTicketsSoldDelta", now: kpisNow.ticketsSold || 0, prev: kpisPrev.ticketsSold || 0 },
+                { id: "kpiPaidAttendeesDelta", now: kpisNow.paidAttendees || 0, prev: kpisPrev.paidAttendees || 0 },
+                { id: "kpiCompedAttendeesDelta", now: kpisNow.compedAttendees || 0, prev: kpisPrev.compedAttendees || 0 },
+                { id: "kpiTotalAttendeesDelta", now: kpisNow.totalAttendees || 0, prev: kpisPrev.totalAttendees || 0 }
+            ];
+            deltas.forEach(({ id, now, prev }) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const pct = pctDelta(now, prev);
+                el.className = "delta " + deltaClass(pct);
+                el.textContent = `${deltaArrow(pct)} ${fmtPct(Math.abs(pct))}`;
+            });
+        }
+
         function render(data) {
             try {
                 const rows = Array.isArray(data?.signups) ? data.signups.slice() : [];
@@ -1599,7 +1648,7 @@
                 const rowsNow = Array.isArray(jsonNow?.signups) ? jsonNow.signups.slice() : [];
 
                 const range = getSelectedRange();
-                let rowsPrev = [];
+                let jsonPrev = {};
                 if (range) {
                     const uPrev = new URL(GAS_URL, window.location.origin);
                     uPrev.searchParams.set("mode", "json");
@@ -1607,13 +1656,12 @@
                     uPrev.searchParams.set("end", range.prevEndISO);
                     const resPrev = await fetch(uPrev.toString());
                     if (resPrev.ok) {
-                        const jsonPrev = await resPrev.json();
-                        rowsPrev = Array.isArray(jsonPrev?.signups) ? jsonPrev.signups.slice() : [];
+                        jsonPrev = await resPrev.json();
                     }
                 }
 
                 render({ signups: rowsNow });
-                setKPIs(rowsNow, rowsPrev);
+                setKPIsFromAPI(jsonNow, jsonPrev);
             } catch (err) {
                 console.error(err);
                 toast("Data load failed");
@@ -1751,6 +1799,9 @@
             const grossRevenue = document.getElementById("kpiGrossRevenue")?.textContent || "—";
             const avgTicketPrice = document.getElementById("kpiAvgTicketPrice")?.textContent || "—";
             const ticketsSold = document.getElementById("kpiTicketsSold")?.textContent || "—";
+            const paidAttendees = document.getElementById("kpiPaidAttendees")?.textContent || "—";
+            const compedAttendees = document.getElementById("kpiCompedAttendees")?.textContent || "—";
+            const totalAttendees = document.getElementById("kpiTotalAttendees")?.textContent || "—";
             const formatDate = (isoDate) => {
                 if (!isoDate) return "";
                 const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
@@ -1795,7 +1846,10 @@
                     const metrics = [
                         { label: "Gross Revenue", value: grossRevenue },
                         { label: "Average Ticket Price", value: avgTicketPrice },
-                        { label: "Tickets Sold", value: ticketsSold }
+                        { label: "Tickets Sold", value: ticketsSold },
+                        { label: "Paid Attendees", value: paidAttendees },
+                        { label: "Comped Attendees", value: compedAttendees },
+                        { label: "Total Attendees", value: totalAttendees }
                     ];
                     metrics.forEach((metric) => {
                         pdf.setFont("helvetica", "bold");
